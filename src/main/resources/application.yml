@@ -1,0 +1,22 @@
+server:
+  port: 8090
+  tomcat.max-threads: 0
+  tomcat.uri-encoding: UTF-8
+
+spring:
+  jpa:
+    database: h2
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:h2:./mydb
+    driver-class-name: org.h2.Driver
+    username: minitt
+    password: BO3YBdqo3vWXfQSa
+  main:
+    banner-mode: "off"
+  security:
+    user:
+      name: minitt
+      password: $2a$10$Ug0uAUpuC8V.Titr/jlfVu/Bm8EbQmIKpNf7zIrYwmwPM281p/kGi

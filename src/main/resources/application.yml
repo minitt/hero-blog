@@ -19,4 +19,6 @@ spring:
   security:
     user:
       name: minitt
+      # zt123123
       password: $2a$10$Ug0uAUpuC8V.Titr/jlfVu/Bm8EbQmIKpNf7zIrYwmwPM281p/kGi
+debug: true

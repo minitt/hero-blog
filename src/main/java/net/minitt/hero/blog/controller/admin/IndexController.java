@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("admin")
 public class IndexController {
 	
 	@RequestMapping("/")
@@ -15,7 +15,7 @@ public class IndexController {
 		return "hello";
 	}
 	
-	@RequestMapping("/info")
+	@RequestMapping("info")
 	public Map<String,Object> info(String token){
 		System.out.println(token);
 		Map<String,Object> info = new HashMap<String,Object>();

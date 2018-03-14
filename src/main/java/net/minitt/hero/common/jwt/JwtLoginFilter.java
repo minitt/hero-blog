@@ -3,14 +3,10 @@ package net.minitt.hero.common.jwt;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,28 +15,26 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 	private AuthenticationManager authenticationManager;
 
 	public JwtLoginFilter(AuthenticationManager authenticationManager) {
+		setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/admin/login", "POST"));
 		this.authenticationManager = authenticationManager;
 	}
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
 			throws AuthenticationException {
-		String username = req.getParameter("username");
-		String password = req.getParameter("password");
+		String username = null;
+		String password = null;
 		StringBuffer sb = new StringBuffer("");
 		BufferedReader br = null;
 		try {
@@ -75,17 +69,5 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 		}
 		return authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>()));
-	}
-
-	@Override
-	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
-			Authentication auth) throws IOException, ServletException {
-		String token = Jwts.builder().setSubject(((User) auth.getPrincipal()).getUsername())
-				.setExpiration(new Date(System.currentTimeMillis() + 60 * 1000))//1分钟过期，测试用
-				.signWith(SignatureAlgorithm.HS512, "HeroJwtSecret").compact();
-		res.setCharacterEncoding("UTF-8");    
-		res.setContentType("application/json; charset=utf-8");  
-		PrintWriter out = res.getWriter();
-	    out.write("{\"code\":20000,\"data\":{\"token\":\"Bearer "+token+"\"}}");
 	}
 }

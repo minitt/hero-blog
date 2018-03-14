@@ -29,11 +29,6 @@ public class App {
         return new CorsFilter(source);  
     }
 	
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
 	public static void main(String[] args) throws Exception {
         SpringApplication.run(App.class, args);
     }

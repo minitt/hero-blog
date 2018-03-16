@@ -18,13 +18,13 @@ public class User extends BaseEntity{
     private String email;
 
     // 用户显示的名称
-    private String screen_name;
+    private String screenName;
 
     // 用户注册时的GMT unix时间戳
-    private Integer created_time;
+    private Integer createdTime;
 
     // 最后活动时间
-    private Integer activated_time;
+    private Integer activatedTime;
 
 	public String getUsername() {
 		return username;
@@ -50,27 +50,28 @@ public class User extends BaseEntity{
 		this.email = email;
 	}
 
-	public String getScreen_name() {
-		return screen_name;
+	public String getScreenName() {
+		return screenName;
 	}
 
-	public void setScreen_name(String screen_name) {
-		this.screen_name = screen_name;
+	public void setScreenName(String screenName) {
+		this.screenName = screenName;
 	}
 
-	public Integer getCreated_time() {
-		return created_time;
+	public Integer getCreatedTime() {
+		return createdTime;
 	}
 
-	public void setCreated_time(Integer created_time) {
-		this.created_time = created_time;
+	public void setCreatedTime(Integer createdTime) {
+		this.createdTime = createdTime;
 	}
 
-	public Integer getActivated_time() {
-		return activated_time;
+	public Integer getActivatedTime() {
+		return activatedTime;
 	}
 
-	public void setActivated_time(Integer activated_time) {
-		this.activated_time = activated_time;
+	public void setActivatedTime(Integer activatedTime) {
+		this.activatedTime = activatedTime;
 	}
+	
 }

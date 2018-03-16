@@ -51,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 					Authentication authentication) throws IOException, ServletException {
 				String token = Jwts.builder().setSubject(((User) authentication.getPrincipal()).getUsername())
-						.setExpiration(new Date(System.currentTimeMillis() + 60 * 1000))//1分钟过期，测试用
+						.setExpiration(new Date(System.currentTimeMillis() + 30 * 60 * 1000))//1分钟过期，测试用
 						.signWith(SignatureAlgorithm.HS512, "HeroJwtSecret").compact();
 				response.setCharacterEncoding("UTF-8");
 				response.setContentType("application/json; charset=utf-8");  

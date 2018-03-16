@@ -17,7 +17,6 @@ public class IndexController {
 	
 	@RequestMapping("info")
 	public Map<String,Object> info(String token){
-		System.out.println(token);
 		Map<String,Object> info = new HashMap<String,Object>();
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("roles", new String[] {"1"});

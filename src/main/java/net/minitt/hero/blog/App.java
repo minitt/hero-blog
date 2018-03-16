@@ -26,7 +26,7 @@ public class App {
     public CorsFilter corsFilter() {  
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();  
         source.registerCorsConfiguration("/**", buildConfig()); // 4  
-        return new CorsFilter(source);  
+        return new CorsFilter(source);
     }
 	
 	public static void main(String[] args) throws Exception {

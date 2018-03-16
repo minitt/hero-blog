@@ -15,12 +15,12 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.QueryHints;
 
 public interface BaseDao<T> extends JpaRepository<T, Serializable>,JpaSpecificationExecutor<T>{
-//	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
-//	public List<T> findAll();
-//	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
-//	public Page<T> findAll(Specification<T> spec, Pageable page);
-//	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
-//	public List<T> findAll(Specification<T> spec, Sort sort);
+	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
+	public List<T> findAll();
+	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
+	public Page<T> findAll(Specification<T> spec, Pageable page);
+	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
+	public List<T> findAll(Specification<T> spec, Sort sort);
 //	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
 //	public T findOne(Serializable id);
 //	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})

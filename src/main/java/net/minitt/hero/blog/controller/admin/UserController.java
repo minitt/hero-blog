@@ -23,7 +23,7 @@ public class UserController extends BaseController{
 	
 	@RequestMapping("list")
 	@ResponseBody
-	public Map<String,Object> list(User searchUser,@PageableDefault(value = 15, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable){
+	public Map<String,Object> list(User searchUser,@PageableDefault(value = 20, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable){
 		return renderPage(userService.findByPage(searchUser, pageable));
 	}
 }

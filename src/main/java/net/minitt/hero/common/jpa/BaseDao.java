@@ -13,7 +13,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.repository.NoRepositoryBean;
 
+@NoRepositoryBean
 public interface BaseDao<T> extends JpaRepository<T, Serializable>,JpaSpecificationExecutor<T>{
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
 	public List<T> findAll();
@@ -23,8 +25,6 @@ public interface BaseDao<T> extends JpaRepository<T, Serializable>,JpaSpecificat
 	public List<T> findAll(Specification<T> spec, Sort sort);
 //	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
 //	public T findOne(Serializable id);
-//	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
-//	default Optional<T> findById(Serializable id) {
-//		return null;
-//	}
+	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
+	public Optional<T> findById(Serializable id);
 }

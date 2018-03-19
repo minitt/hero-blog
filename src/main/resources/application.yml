@@ -8,12 +8,12 @@ spring:
     database: h2
     hibernate:
       ddl-auto: update
-    properties:
-      javax.persistence.sharedCache.mode: ALL #ENABLE_SELECTIVE
-      hibernate.generate_statistics: true
-      hibernate.cache.use_second_level_cache: true
-      hibernate.cache.use_query_cache: true
-      hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+    #properties:
+      #javax.persistence.sharedCache.mode: ALL #hibernate二级缓存模式（ALL,ENABLE_SELECTIVE） 
+      #hibernate.generate_statistics: true
+      #hibernate.cache.use_second_level_cache: true
+      #hibernate.cache.use_query_cache: true
+      #hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     show-sql: true
   datasource:
     url: jdbc:h2:./mydb
@@ -21,10 +21,19 @@ spring:
     username: minitt
     password: BO3YBdqo3vWXfQSa
   main:
-    banner-mode: "off"
+    banner-mode: "off" #启动控制台的logo
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true #分页对象从第1页开始（默认是从第0页）
 #  security:
 #    user:
 #      name: minitt
 #      # zt123123
 #      password: $2a$10$Ug0uAUpuC8V.Titr/jlfVu/Bm8EbQmIKpNf7zIrYwmwPM281p/kGi
 debug: true
+
+logging:
+  level:
+    org.hibernate.SQL: trace #hibernate语句文号参数
+    org.hibernate.type: trace #hibernate语句文号参数

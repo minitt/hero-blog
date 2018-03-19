@@ -1,6 +1,4 @@
-package net.minitt.hero.common.jwt;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
+package net.minitt.hero.blog;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +14,6 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,6 +31,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import net.minitt.hero.blog.service.UserService;
+import net.minitt.hero.common.jwt.JwtAuthenticationFilter;
+import net.minitt.hero.common.jwt.JwtLoginFilter;
 
 @Configuration
 @Order(SecurityProperties.DEFAULT_FILTER_ORDER)

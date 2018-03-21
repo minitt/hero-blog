@@ -18,7 +18,7 @@ public class Comment extends BaseEntity{
     private Article article;
 
     // 评论生成时的GMT unix时间戳
-    private Integer createdTime;
+    private Long createdTime;
 
     // 评论作者
     private String author;
@@ -65,11 +65,11 @@ public class Comment extends BaseEntity{
 		this.article = article;
 	}
 
-	public Integer getCreatedTime() {
+	public Long getCreatedTime() {
 		return createdTime;
 	}
 
-	public void setCreatedTime(Integer createdTime) {
+	public void setCreatedTime(Long createdTime) {
 		this.createdTime = createdTime;
 	}
 

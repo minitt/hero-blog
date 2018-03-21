@@ -9,4 +9,7 @@ public interface UserService {
 	public User findUser(String username);
 	public User findByUsername(String username);
 	public Page<User> findByPage(User searchUser, Pageable pageable);
+	public User save(User user);
+	public void deleteById(Integer id);
+	public void deleteByIds(Integer[] ids);
 }

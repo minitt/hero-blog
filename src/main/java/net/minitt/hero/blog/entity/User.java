@@ -2,6 +2,8 @@ package net.minitt.hero.blog.entity;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import net.minitt.hero.common.jpa.BaseEntity;
 
 @Entity
@@ -12,6 +14,7 @@ public class User extends BaseEntity{
     private String username;
 
     // 用户密码
+    @JsonIgnore
     private String password;
 
     // 用户的邮箱
@@ -21,10 +24,10 @@ public class User extends BaseEntity{
     private String screenName;
 
     // 用户注册时的GMT unix时间戳
-    private Integer createdTime;
+    private Long createdTime;
 
     // 最后活动时间
-    private Integer activatedTime;
+    private Long activatedTime;
 
 	public String getUsername() {
 		return username;
@@ -58,19 +61,19 @@ public class User extends BaseEntity{
 		this.screenName = screenName;
 	}
 
-	public Integer getCreatedTime() {
+	public Long getCreatedTime() {
 		return createdTime;
 	}
 
-	public void setCreatedTime(Integer createdTime) {
+	public void setCreatedTime(Long createdTime) {
 		this.createdTime = createdTime;
 	}
 
-	public Integer getActivatedTime() {
+	public Long getActivatedTime() {
 		return activatedTime;
 	}
 
-	public void setActivatedTime(Integer activatedTime) {
+	public void setActivatedTime(Long activatedTime) {
 		this.activatedTime = activatedTime;
 	}
 	

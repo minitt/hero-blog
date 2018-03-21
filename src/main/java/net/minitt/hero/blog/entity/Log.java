@@ -22,7 +22,7 @@ public class Log extends BaseEntity {
 	// 日志产生的ip
 	private String ip;
 	// 日志创建时间
-	private Integer createdTime;
+	private Long createdTime;
 	
 	public String getAction() {
 		return action;
@@ -48,10 +48,10 @@ public class Log extends BaseEntity {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	public Integer getCreatedTime() {
+	public Long getCreatedTime() {
 		return createdTime;
 	}
-	public void setCreatedTime(Integer createdTime) {
+	public void setCreatedTime(Long createdTime) {
 		this.createdTime = createdTime;
 	}
 	

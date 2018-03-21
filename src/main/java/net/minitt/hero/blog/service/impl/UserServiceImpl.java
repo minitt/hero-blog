@@ -37,11 +37,11 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public Page<User> findByPage(final User searchUser, Pageable pageable){
+	public Page<User> findByPage(final User searchUser, Pageable pageable) {
 		return userDao.findAll(getSpec(searchUser), pageable);
 	}
 	
-	private Specification<User> getSpec(final User user){
+	private Specification<User> getSpec(final User user) {
 		return new Specification<User>() {
 			private static final long serialVersionUID = 1L;
 
@@ -56,6 +56,25 @@ public class UserServiceImpl implements UserService{
 				return predicate;
 			}
 		};
+	}
+
+	@Override
+	public User save(User user) {
+		return userDao.save(user);
+	}
+
+	@Override
+	public void deleteById(Integer id) {
+		userDao.deleteById(id);
+	}
+
+	@Override
+	public void deleteByIds(Integer[] ids) {
+		if(ids!=null) {
+			for(Integer id:ids) {
+				deleteById(id);
+			}
+		}
 	}
 
 }

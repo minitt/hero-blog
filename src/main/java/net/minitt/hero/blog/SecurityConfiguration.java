@@ -50,8 +50,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 					Authentication authentication) throws IOException, ServletException {
 				String token = Jwts.builder().setSubject(((User) authentication.getPrincipal()).getUsername())
-						.setExpiration(new Date(System.currentTimeMillis() + 30 * 60 * 1000))//1分钟过期，测试用
-						.signWith(SignatureAlgorithm.HS512, "HeroJwtSecret").compact();
+						.setExpiration(new Date(System.currentTimeMillis() + 30 * 60 * 1000))//过期时间30分钟
+						.signWith(SignatureAlgorithm.HS512, "XdYKq22i@L'3}BdW{J;p'wSaRZSQs''v").compact();
 				response.setCharacterEncoding("UTF-8");
 				response.setContentType("application/json; charset=utf-8");  
 				PrintWriter out = response.getWriter();
@@ -73,8 +73,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     		
     	});
         http.cors().and().csrf().disable()
-        		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        		.and()
+        		//.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        		//.and()
         		.authorizeRequests()
         		.antMatchers("/admin/**").authenticated()
                 //.antMatchers(HttpMethod.POST, "/admin/login").permitAll()

@@ -5,9 +5,11 @@ server:
 
 spring:
   jpa:
-    database: h2
+    #database: h2
+    database-platform: net.minitt.hero.hibernate5.sqlite3.SQLiteDialect
     hibernate:
       ddl-auto: update
+    open-in-view: true #hibernate session open in view
     #properties:
       #javax.persistence.sharedCache.mode: ALL #hibernate二级缓存模式（ALL,ENABLE_SELECTIVE） 
       #hibernate.generate_statistics: true
@@ -16,8 +18,8 @@ spring:
       #hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     show-sql: true
   datasource:
-    url: jdbc:h2:./mydb
-    driver-class-name: org.h2.Driver
+    url: jdbc:sqlite:db/hero-blog.db
+    driver-class-name: org.sqlite.JDBC
     username: minitt
     password: BO3YBdqo3vWXfQSa
   main:

@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) throws Exception {
 		String token = request.getHeader("Authorization");
 		if (token != null) {
-			String user = Jwts.parser().setSigningKey("HeroJwtSecret").parseClaimsJws(token.replace("Bearer ", ""))
+			String user = Jwts.parser().setSigningKey("XdYKq22i@L'3}BdW{J;p'wSaRZSQs''v").parseClaimsJws(token.replace("Bearer ", ""))
 					.getBody().getSubject();
 			if (user != null) {
 				return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());

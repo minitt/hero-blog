@@ -21,9 +21,9 @@ public class Article extends BaseEntity {
 	// 内容缩略名
 	private String slug;
 	// 内容生成时的GMT unix时间戳
-	private Integer createdTime;
+	private Long createdTime;
 	// 内容更改时的GMT unix时间戳
-	private Integer modifiedTime;
+	private Long modifiedTime;
 	// 内容文字
 	private String content;
 	// 内容作者
@@ -75,19 +75,19 @@ public class Article extends BaseEntity {
 		this.slug = slug;
 	}
 
-	public Integer getCreatedTime() {
+	public Long getCreatedTime() {
 		return createdTime;
 	}
 
-	public void setCreatedTime(Integer createdTime) {
+	public void setCreatedTime(Long createdTime) {
 		this.createdTime = createdTime;
 	}
 
-	public Integer getModifiedTime() {
+	public Long getModifiedTime() {
 		return modifiedTime;
 	}
 
-	public void setModifiedTime(Integer modifiedTime) {
+	public void setModifiedTime(Long modifiedTime) {
 		this.modifiedTime = modifiedTime;
 	}
 

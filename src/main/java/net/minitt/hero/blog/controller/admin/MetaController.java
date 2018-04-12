@@ -12,35 +12,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.minitt.hero.blog.entity.User;
-import net.minitt.hero.blog.service.UserService;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import net.minitt.hero.blog.entity.Meta;
+import net.minitt.hero.blog.entity.Meta.WithoutArticesView;
+import net.minitt.hero.blog.service.MetaService;
 import net.minitt.hero.common.spring.BaseController;
 
 @RestController
-@RequestMapping("admin/user")
-public class UserController extends BaseController{
-	
+@RequestMapping("admin/meta")
+public class MetaController extends BaseController{
+
 	@Autowired
-	private UserService userService;
+	private MetaService metaService;
 	
 	@RequestMapping("list")
-	public Map<String,Object> list(User searchUser,@PageableDefault(value = 20, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable){
-		return renderJson(userService.findByPage(searchUser, pageable));
+	public Map<String,Object> list(Meta searchMeta,@PageableDefault(value = 20, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable){
+		return renderJson(metaService.findByPage(searchMeta, pageable));
+	}
+	
+	@RequestMapping("search")
+	@JsonView(WithoutArticesView.class)
+	public Map<String,Object> search(Meta searchMeta){
+		return renderJson(metaService.findAll(searchMeta));
 	}
 	
 	@RequestMapping("create")
-	public Map<String,Object> create(@RequestBody @Validated User user,String password){
-		if(user==null)
-			throw new IllegalArgumentException("Parameter error!user is null");
-		user.setPassword(password);
-		userService.save(user);
+	public Map<String,Object> create(@RequestBody @Validated Meta meta){
+		if(meta==null)
+			throw new IllegalArgumentException("Parameter error!meta is null");
+		metaService.save(meta);
 		return renderSuceess();
 	}
 	
 	@RequestMapping("update")
-	public Map<String,Object> update(@RequestBody @Validated User user,String password){
-		user.setPassword(password);
-		userService.save(user);
+	public Map<String,Object> update(@RequestBody @Validated Meta meta){
+		if(meta==null)
+			throw new IllegalArgumentException("Parameter error!meta is null");
+		metaService.save(meta);
 		return renderSuceess();
 	}
 	
@@ -48,7 +57,7 @@ public class UserController extends BaseController{
 	public Map<String,Object> del(Integer id){
 		if(id==null)
 			throw new IllegalArgumentException("Parameter error!id is null");
-		userService.deleteById(id);
+		metaService.deleteById(id);
 		return renderSuceess();
 	}
 	
@@ -56,7 +65,7 @@ public class UserController extends BaseController{
 	public Map<String,Object> delBatch(@RequestParam(value = "idArr[]")Integer[] idArr){
 		if(idArr==null)
 			throw new IllegalArgumentException("Parameter error!idArr is null!");
-		userService.deleteByIds(idArr);
+		metaService.deleteByIds(idArr);
 		return renderSuceess();
 	}
 }

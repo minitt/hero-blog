@@ -1,6 +1,7 @@
 package net.minitt.hero.blog.entity;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,9 +12,13 @@ public class User extends BaseEntity{
 	private static final long serialVersionUID = 1L;
 
 	// 用户名称
+	@NotBlank
     private String username;
 
-    // 用户密码
+    /**
+     * 密码
+     * 永远不序列化密码
+     */
     @JsonIgnore
     private String password;
 
@@ -21,6 +26,7 @@ public class User extends BaseEntity{
     private String email;
 
     // 用户显示的名称
+    @NotBlank
     private String screenName;
 
     // 用户注册时的GMT unix时间戳

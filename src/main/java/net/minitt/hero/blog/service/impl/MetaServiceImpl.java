@@ -1,6 +1,5 @@
 package net.minitt.hero.blog.service.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,46 +12,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import net.minitt.hero.blog.dao.UserDao;
-import net.minitt.hero.blog.entity.User;
-import net.minitt.hero.blog.service.UserService;
+import net.minitt.hero.blog.dao.MetaDao;
+import net.minitt.hero.blog.entity.Meta;
+import net.minitt.hero.blog.service.MetaService;
 
 @Service
 @Transactional(readOnly = true)
-public class UserServiceImpl implements UserService{
+public class MetaServiceImpl implements MetaService{
+	
 	@Autowired
-    private UserDao userDao;
+	private MetaDao metaDao;
 
 	@Override
-	public User findUser(String username) {
-		return userDao.findByUsername(username);
-	}
-
-	@Override
-	public User findByUsername(String username) {
-		return userDao.findByUsername(username);
+	public Page<Meta> findByPage(final Meta searchMeta, Pageable pageable) {
+		return metaDao.findAll(getSpec(searchMeta), pageable);
 	}
 	
-	@Override
-	public Page<User> findByPage(final User searchUser, Pageable pageable) {
-		return userDao.findAll(getSpec(searchUser), pageable);
-	}
-	
-	private Specification<User> getSpec(final User user) {
-		return new Specification<User>() {
+	private Specification<Meta> getSpec(final Meta meta) {
+		return new Specification<Meta>() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public Predicate toPredicate(Root<User> root,
+			public Predicate toPredicate(Root<Meta> root,
 					CriteriaQuery<?> query, CriteriaBuilder cb) {
 				Predicate predicate = cb.conjunction();
 				List<Expression<Boolean>> expressions = predicate.getExpressions();
-				if(!StringUtils.isEmpty(user.getScreenName())){
-					expressions.add(cb.like(root.get("screenName"), "%"+user.getScreenName()+"%"));
+				if(!StringUtils.isEmpty(meta.getName())){
+					expressions.add(cb.like(root.get("name"), "%"+meta.getName()+"%"));
 				}
 				return predicate;
 			}
@@ -61,19 +50,14 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional(readOnly = false)
-	public User save(User user) {
-		user.setActivatedTime(new Date().getTime());
-		if(user.getId()==null) {
-			user.setCreatedTime(new Date().getTime());
-		}
-		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-		return userDao.save(user);
+	public Meta save(Meta meta) {
+		return metaDao.save(meta);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public void deleteById(Integer id) {
-		userDao.deleteById(id);
+		metaDao.deleteById(id);
 	}
 
 	@Override
@@ -86,4 +70,8 @@ public class UserServiceImpl implements UserService{
 		}
 	}
 
+	@Override
+	public List<Meta> findAll(Meta searchMeta) {
+		return metaDao.findAll(getSpec(searchMeta));
+	}
 }

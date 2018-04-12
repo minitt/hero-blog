@@ -57,7 +57,13 @@ public class Article extends BaseEntity {
 	@JoinTable(name="relationships",joinColumns=
             @JoinColumn(name="article_id"),
         inverseJoinColumns=@JoinColumn(name="meta_id"))
-	private Set<Meta> matas;
+	private Set<Meta> typeSet;
+	
+	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinTable(name="relationships",joinColumns=
+            @JoinColumn(name="article_id"),
+        inverseJoinColumns=@JoinColumn(name="meta_id"))
+	private Set<Meta> tagSet;
 
 	public String getTitle() {
 		return title;
@@ -195,12 +201,30 @@ public class Article extends BaseEntity {
 		this.allowFeed = allowFeed;
 	}
 
-	public Set<Meta> getMatas() {
-		return matas;
+	public Set<Meta> getTypeSet() {
+		return typeSet;
 	}
 
-	public void setMatas(Set<Meta> matas) {
-		this.matas = matas;
+	public void setTypeSet(Set<Meta> typeSet) {
+		this.typeSet = typeSet;
+	}
+
+	public Set<Meta> getTagSet() {
+		return tagSet;
+	}
+
+	public void setTagSet(Set<Meta> tagSet) {
+		this.tagSet = tagSet;
+	}
+
+	public boolean equals (Object obj) {
+		if (null == obj) return false;
+		if (!(obj instanceof Article)) return false;
+		else {
+			Article article = (Article) obj;
+			if (null == this.getId() || null == article.getId()) return false;
+			else return (this.getId().equals(article.getId()));
+		}
 	}
 
 }

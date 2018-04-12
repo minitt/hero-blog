@@ -6,27 +6,43 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 import net.minitt.hero.common.jpa.BaseEntity;
 
 @Entity
 public class Meta extends BaseEntity {
+	public interface WithoutArticesView extends BaseJsonView {};
+	public interface WithArticesView extends WithoutArticesView {};
+	
 	private static final long serialVersionUID = 1L;
 	// 名称
+	@NotBlank
+	@JsonView(WithoutArticesView.class)
 	private String name;
 	// 项目缩略名
+	@JsonView(WithoutArticesView.class)
 	private String slug;
 	// 项目类型
+	@NotBlank
+	@JsonView(WithoutArticesView.class)
 	private String type;
 	// 选项描述
+	@JsonView(WithoutArticesView.class)
 	private String description;
 	// 项目排序
-	private Integer sort;
-	// 文章数
-	private Integer count;
+	@JsonView(WithoutArticesView.class)
+	private Integer orderby;
 	
-	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="matas")
-	private Set<Article> artices;
+	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="typeSet")
+	@JsonView(WithArticesView.class)
+	private Set<Article> articesByType;
+	
+	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="tagSet")
+	@JsonView(WithArticesView.class)
+	private Set<Article> articesByTag;
 
 	public String getName() {
 		return name;
@@ -60,28 +76,37 @@ public class Meta extends BaseEntity {
 		this.description = description;
 	}
 
-	public Integer getSort() {
-		return sort;
+	public Set<Article> getArticesByType() {
+		return articesByType;
 	}
 
-	public void setSort(Integer sort) {
-		this.sort = sort;
+	public void setArticesByType(Set<Article> articesByType) {
+		this.articesByType = articesByType;
 	}
 
-	public Integer getCount() {
-		return count;
+	public Set<Article> getArticesByTag() {
+		return articesByTag;
 	}
 
-	public void setCount(Integer count) {
-		this.count = count;
+	public void setArticesByTag(Set<Article> articesByTag) {
+		this.articesByTag = articesByTag;
 	}
 
-	public Set<Article> getArtices() {
-		return artices;
+	public Integer getOrderby() {
+		return orderby;
 	}
 
-	public void setArtices(Set<Article> artices) {
-		this.artices = artices;
+	public void setOrderby(Integer orderby) {
+		this.orderby = orderby;
 	}
-
+	
+	public boolean equals (Object obj) {
+		if (null == obj) return false;
+		if (!(obj instanceof Meta)) return false;
+		else {
+			Meta meta = (Meta) obj;
+			if (null == this.getId() || null == meta.getId()) return false;
+			else return (this.getId().equals(meta.getId()));
+		}
+	}
 }

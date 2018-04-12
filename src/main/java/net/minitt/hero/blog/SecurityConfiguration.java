@@ -73,8 +73,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     		
     	});
         http.cors().and().csrf().disable()
-        		//.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        		//.and()
+        		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        		.and()
         		.authorizeRequests()
         		.antMatchers("/admin/**").authenticated()
                 //.antMatchers(HttpMethod.POST, "/admin/login").permitAll()

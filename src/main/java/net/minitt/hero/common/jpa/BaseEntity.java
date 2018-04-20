@@ -19,7 +19,7 @@ public class BaseEntity implements Serializable {
 
     /** ID */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(BaseJsonView.class)
     protected Integer id;
     public Integer getId() {

@@ -3,6 +3,7 @@ package net.minitt.hero.blog.service.impl;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,13 +21,18 @@ import org.springframework.util.StringUtils;
 
 import net.minitt.hero.blog.dao.ArticleDao;
 import net.minitt.hero.blog.entity.Article;
+import net.minitt.hero.blog.entity.Meta;
 import net.minitt.hero.blog.service.ArticleService;
+import net.minitt.hero.blog.service.MetaService;
 
 @Service
 @Transactional(readOnly = true)
 public class ArticleServiceImpl implements ArticleService {
 	@Autowired
     private ArticleDao articleDao;
+	
+	@Autowired
+	private MetaService metaService;
 
 	@Override
 	public Page<Article> findByPage(Article searchArticle, Pageable pageable) {
@@ -35,11 +41,20 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Article save(Article article) {
+	public Article save(Article article,Set<Integer> types) {
 		if(article.getId()==null) {
 			article.setCreatedTime(new Date().getTime());
+		}else {
+			article.setModifiedTime(new Date().getTime());
+		}
+		String categories = null;
+		if(types!=null) {
+			List<Meta> typeList = metaService.findAllByIds(types);
+			categories = Meta.fetchNames(typeList);
+			article.addTypes(typeList);
 		}
 		article.setModifiedTime(new Date().getTime());
+		article.setCategories(categories);
 		return articleDao.save(article);
 	}
 
@@ -78,5 +93,10 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public Optional<Article> findById(Integer id) {
 		return articleDao.findById(id);
+	}
+
+	@Override
+	public Page<Article> findByPage(Pageable pageable) {
+		return articleDao.findAll(pageable);
 	}
 }

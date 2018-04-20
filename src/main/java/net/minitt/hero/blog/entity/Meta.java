@@ -1,5 +1,6 @@
 package net.minitt.hero.blog.entity;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -8,40 +9,29 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import net.minitt.hero.common.jpa.BaseEntity;
 
 @Entity
 public class Meta extends BaseEntity {
-	public interface WithoutArticesView extends BaseJsonView {};
-	public interface WithArticesView extends WithoutArticesView {};
 	
 	private static final long serialVersionUID = 1L;
 	// 名称
 	@NotBlank
-	@JsonView(WithoutArticesView.class)
 	private String name;
 	// 项目缩略名
-	@JsonView(WithoutArticesView.class)
 	private String slug;
 	// 项目类型
 	@NotBlank
-	@JsonView(WithoutArticesView.class)
 	private String type;
 	// 选项描述
-	@JsonView(WithoutArticesView.class)
 	private String description;
 	// 项目排序
-	@JsonView(WithoutArticesView.class)
 	private Integer orderby;
 	
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="typeSet")
-	@JsonView(WithArticesView.class)
 	private Set<Article> articesByType;
 	
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="tagSet")
-	@JsonView(WithArticesView.class)
 	private Set<Article> articesByTag;
 
 	public String getName() {
@@ -98,6 +88,17 @@ public class Meta extends BaseEntity {
 
 	public void setOrderby(Integer orderby) {
 		this.orderby = orderby;
+	}
+	
+	public static String fetchNames(Collection<Meta> metas) {
+		StringBuffer names = new StringBuffer();
+		if(metas!=null) {
+			for (Meta m : metas) {
+				names.append(m.getName());
+				names.append(" ");
+			}
+		}
+		return names.toString().trim();
 	}
 	
 	public boolean equals (Object obj) {

@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import net.minitt.hero.blog.entity.Meta;
-import net.minitt.hero.blog.entity.Meta.WithoutArticesView;
 import net.minitt.hero.blog.service.MetaService;
 import net.minitt.hero.common.spring.BaseController;
 
@@ -32,7 +29,6 @@ public class MetaController extends BaseController{
 	}
 	
 	@RequestMapping("search")
-	@JsonView(WithoutArticesView.class)
 	public Map<String,Object> search(Meta searchMeta){
 		return renderJson(metaService.findAll(searchMeta));
 	}

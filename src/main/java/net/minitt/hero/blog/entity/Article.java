@@ -1,30 +1,40 @@
 package net.minitt.hero.blog.entity;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 
 import net.minitt.hero.common.jpa.BaseEntity;
 
 @Entity
 public class Article extends BaseEntity {
+	public static final String FMT_TYPE_MD = "markdown";
+	public static final String FMT_TYPE_HTML = "html";
 
 	private static final long serialVersionUID = 1L;
 
+	@NotBlank
 	private String title;
-	// 内容缩略名
+	// 文章类型（如关于我们或者普通文章）
 	private String slug;
 	// 内容生成时的GMT unix时间戳
 	private Long createdTime;
 	// 内容更改时的GMT unix时间戳
 	private Long modifiedTime;
 	// 内容文字
+	@Lob
+    @Basic(fetch=FetchType.LAZY)
 	private String content;
 	// 内容作者
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -215,6 +225,28 @@ public class Article extends BaseEntity {
 
 	public void setTagSet(Set<Meta> tagSet) {
 		this.tagSet = tagSet;
+	}
+	
+	public void addType(Meta type) {
+		Set<Meta> types = getTypeSet();
+		if (types == null) {
+			types = new HashSet<Meta>();
+			setTypeSet(types);
+		}
+		types.add(type);
+		type.getArticesByType().add(this);
+	}
+	
+	public void addTypes(Collection<Meta> types) {
+		Set<Meta> thistypes = getTypeSet();
+		if (thistypes == null) {
+			thistypes = new HashSet<Meta>();
+			setTypeSet(thistypes);
+		}
+		thistypes.addAll(types);
+		for(Meta m:types) {
+			m.getArticesByType().add(this);
+		}
 	}
 
 	public boolean equals (Object obj) {

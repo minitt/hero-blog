@@ -1,5 +1,6 @@
 package net.minitt.hero.blog.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 
@@ -13,6 +14,7 @@ public class User extends BaseEntity{
 
 	// 用户名称
 	@NotBlank
+	@Column(unique=true)
     private String username;
 
     /**

@@ -1,6 +1,7 @@
 package net.minitt.hero.blog.controller.admin;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -36,18 +37,19 @@ public class ArticleController extends BaseController{
 	}
 	
 	@RequestMapping("create")
-	public Map<String,Object> create(@RequestBody @Validated Article article,@RequestParam(value = "typeids[]")Integer[] typeArr){
+	public Map<String,Object> create(@RequestBody @Validated Article article,@RequestParam(value = "typeids[]")Set<Integer> typeArr){
 		if(article==null)
 			throw new IllegalArgumentException("Parameter error!article is null");
-		articleService.save(article);
+		article.setFmtType(Article.FMT_TYPE_MD);//暂时只支持markdown
+		articleService.save(article,typeArr);
 		return renderSuceess();
 	}
 	
 	@RequestMapping("update")
-	public Map<String,Object> update(@RequestBody @Validated Article article){
+	public Map<String,Object> update(@RequestBody @Validated Article article,@RequestParam(value = "typeids[]")Set<Integer> typeArr){
 		if(article==null)
 			throw new IllegalArgumentException("Parameter error!Article is null");
-		articleService.save(article);
+		articleService.save(article,typeArr);
 		return renderSuceess();
 	}
 	

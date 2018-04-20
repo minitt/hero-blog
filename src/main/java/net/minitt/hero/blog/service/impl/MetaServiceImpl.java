@@ -1,6 +1,7 @@
 package net.minitt.hero.blog.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -73,5 +74,10 @@ public class MetaServiceImpl implements MetaService{
 	@Override
 	public List<Meta> findAll(Meta searchMeta) {
 		return metaDao.findAll(getSpec(searchMeta));
+	}
+
+	@Override
+	public List<Meta> findAllByIds(Set<Integer> ids) {
+		return metaDao.findAllById(ids);
 	}
 }

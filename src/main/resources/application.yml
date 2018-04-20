@@ -5,8 +5,7 @@ server:
 
 spring:
   jpa:
-    #database: h2
-    database-platform: net.minitt.hero.hibernate5.sqlite3.SQLiteDialect
+    database: h2
     hibernate:
       ddl-auto: update
     open-in-view: true #hibernate session open in view
@@ -17,25 +16,43 @@ spring:
       #hibernate.cache.use_query_cache: true
       #hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     show-sql: true
-  datasource:
-    url: jdbc:sqlite:db/hero-blog.db
-    driver-class-name: org.sqlite.JDBC
+  datasource: 
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:./db/hero-blog;AUTO_SERVER=TRUE # AUTO_SERVER=TRUE 混合模式，开发时使用。方便客户端和程序同时连接。
     username: minitt
     password: BO3YBdqo3vWXfQSa
-  main:
-    banner-mode: "off" #启动控制台的logo
+#  main:
+#    banner-mode: "off" #启动控制台的logo
   data:
     web:
       pageable:
         one-indexed-parameters: true #分页对象从第1页开始（默认是从第0页）
+  freemarker:
+    request-context-attribute: ctx
+    settings:
+      number_format: 0.##
+  mvc:
+    static-path-pattern: /res/**
+    favicon:
+      enabled: false
+#  resources:
+#    static-locations:
+#    - classpath:/templates/static
 #  security:
 #    user:
 #      name: minitt
 #      # zt123123
 #      password: $2a$10$Ug0uAUpuC8V.Titr/jlfVu/Bm8EbQmIKpNf7zIrYwmwPM281p/kGi
-debug: true
+#debug: true
 
-logging:
-  level:
-    org.hibernate.SQL: trace #hibernate语句文号参数
-    org.hibernate.type: trace #hibernate语句文号参数
+#logging:
+#  level:
+#    org.hibernate: debug
+#    org.hibernate.SQL: debug #hibernate语句文号参数
+#    org.hibernate.type: debug #hibernate语句文号参数
+#    org.hibernate.jdbc: debug
+
+# 健康管理
+management:
+  server:
+    port: 54001

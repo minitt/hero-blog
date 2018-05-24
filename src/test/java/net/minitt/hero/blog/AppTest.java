@@ -26,14 +26,14 @@ public class AppTest{
 	
 	@Test
 	public void insertUser() {
-//		String x = new BCryptPasswordEncoder().encode("123456");
-//		User u = new User();
-//		u.setActivatedTime(new Date().getTime());
-//		u.setCreatedTime(new Date().getTime());
-//		u.setEmail("253542831@qq.com");
-//		u.setPassword(x);
-//		u.setScreenName("管理员");
-//		u.setUsername("minitt");
-//		userDao.save(u);
+		String x = new BCryptPasswordEncoder().encode("123456");
+		User u = new User();
+		u.setActivatedTime(new Date().getTime());
+		u.setCreatedTime(new Date().getTime());
+		u.setEmail("253542831@qq.com");
+		u.setPassword(x);
+		u.setScreenName("管理员");
+		u.setUsername("minitt");
+		userDao.save(u);
 	}
 }

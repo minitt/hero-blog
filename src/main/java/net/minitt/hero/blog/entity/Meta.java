@@ -14,6 +14,9 @@ import net.minitt.hero.common.jpa.BaseEntity;
 @Entity
 public class Meta extends BaseEntity {
 	
+	public static final String TYPE_TAG = "tag";
+	public static final String TYPE_CATEGORY = "category";
+	
 	private static final long serialVersionUID = 1L;
 	// 名称
 	@NotBlank

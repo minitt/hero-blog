@@ -2,7 +2,6 @@ package net.minitt.hero.blog;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -21,7 +20,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +31,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import net.minitt.hero.blog.service.UserService;
 import net.minitt.hero.common.jwt.JwtAuthenticationFilter;
 import net.minitt.hero.common.jwt.JwtLoginFilter;
+import net.minitt.hero.common.spring.SecurityUser;
 
 @Configuration
 @Order(SecurityProperties.DEFAULT_FILTER_ORDER)
@@ -49,7 +48,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			@Override
 			public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 					Authentication authentication) throws IOException, ServletException {
-				String token = Jwts.builder().setSubject(((User) authentication.getPrincipal()).getUsername())
+				SecurityUser u = (SecurityUser) authentication.getPrincipal();
+				String token = Jwts.builder().claim("username", u.getUsername()).claim("id", u.getId())
 						.setExpiration(new Date(System.currentTimeMillis() + 30 * 60 * 1000))//过期时间30分钟
 						.signWith(SignatureAlgorithm.HS512, "XdYKq22i@L'3}BdW{J;p'wSaRZSQs''v").compact();
 				response.setCharacterEncoding("UTF-8");
@@ -97,8 +97,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
             if(account==null) {
             	throw new UsernameNotFoundException(username);
             }
-            User user = new User(account.getUsername(), account.getPassword(),
-                    true, true, true, true,new ArrayList<>());
+            SecurityUser user = new SecurityUser(account);
             return user;
         };
     }

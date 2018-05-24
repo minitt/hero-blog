@@ -10,8 +10,11 @@ public class SysConfig extends BaseEntity{
 
 	// 配置名称
     private String key;
+    private String type;
+    private String options;
     // 配置值
     private String val;
+    private Integer sort;
     // 配置描述
     private String description;
 
@@ -37,6 +40,30 @@ public class SysConfig extends BaseEntity{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
     
 }

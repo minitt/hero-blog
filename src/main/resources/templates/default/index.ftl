@@ -1,4 +1,4 @@
-<#include "/common/header.ftl">
+<#include "common/header.ftl">
 <div class="main-content index-page clearfix">
 	<div class="note">
 		<ul class="note-list">
@@ -17,4 +17,4 @@
 		</ul>
 	</div>
 </div>
-<#include "/common/footer.ftl">
+<#include "common/footer.ftl">

@@ -6,8 +6,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-public class BaseController {
+public abstract class BaseController {
 	
 	private static final int SUCCESS_CODE = 20000;
 	private static final int FAILD_CODE = 50000;
@@ -53,5 +54,9 @@ public class BaseController {
 		m.put("data", msg);
 		m.put("code", FAILD_CODE);
 		return m;
+	}
+	
+	protected SecurityUser getCurrUser() {
+		return (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 }

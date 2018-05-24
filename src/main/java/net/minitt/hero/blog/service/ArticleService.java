@@ -11,7 +11,8 @@ import net.minitt.hero.blog.entity.Article;
 public interface ArticleService {
 	public Page<Article> findByPage(Article searchArticle, Pageable pageable);
 	public Page<Article> findByPage(Pageable pageable);
-	public Article save(Article article,Set<Integer> typeArr);
+	public Article save(Article article,Set<Integer> typeArr,Set<String> tagnameArr);
+	public Article save(Article article,Set<Integer> typeArr,Set<String> tagnameArr,String status);
 	public Optional<Article> findById(Integer id);
 	public void deleteById(Integer id);
 	public void deleteByIds(Integer[] ids);

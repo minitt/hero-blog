@@ -1,5 +1,6 @@
 package net.minitt.hero.blog.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -38,24 +39,48 @@ public class ArticleServiceImpl implements ArticleService {
 	public Page<Article> findByPage(Article searchArticle, Pageable pageable) {
 		return articleDao.findAll(getSpec(searchArticle), pageable);
 	}
-
+	
 	@Override
 	@Transactional(readOnly = false)
-	public Article save(Article article,Set<Integer> types) {
+	public Article save(Article article,Set<Integer> types,Set<String> tagnameArr,String status) {
 		if(article.getId()==null) {
 			article.setCreatedTime(new Date().getTime());
 		}else {
 			article.setModifiedTime(new Date().getTime());
 		}
 		String categories = null;
+		String tags = null;
 		if(types!=null) {
 			List<Meta> typeList = metaService.findAllByIds(types);
 			categories = Meta.fetchNames(typeList);
 			article.addTypes(typeList);
 		}
+		if(tagnameArr!=null) {
+			List<Meta> tagList = new ArrayList<Meta>();
+			for(String tagname:tagnameArr) {
+				Meta tag = new Meta();
+				tag.setName(tagname);
+				tag.setType(Meta.TYPE_TAG);
+				tag.setOrderby(0);
+				article.addTag(metaService.save(tag));
+				tagList.add(tag);
+			}
+			tags = Meta.fetchNames(tagList);
+		}
+		article.setFmtType(Article.FMT_TYPE_MD);//暂时只支持markdown
 		article.setModifiedTime(new Date().getTime());
 		article.setCategories(categories);
+		article.setTags(tags);
+		article.setHits(0);
+		article.setStatus(status);
+		article.setAllowComment(false);
 		return articleDao.save(article);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public Article save(Article article,Set<Integer> types,Set<String> tagnameArr) {
+		return save(article,types,tagnameArr,Article.STATUS_PUBLISH);
 	}
 
 	@Override
@@ -83,7 +108,7 @@ public class ArticleServiceImpl implements ArticleService {
 				Predicate predicate = cb.conjunction();
 				List<Expression<Boolean>> expressions = predicate.getExpressions();
 				if(!StringUtils.isEmpty(article.getTitle())){
-					expressions.add(cb.like(root.get("screenName"), "%"+article.getTitle()+"%"));
+					expressions.add(cb.like(root.get("title"), "%"+article.getTitle()+"%"));
 				}
 				return predicate;
 			}

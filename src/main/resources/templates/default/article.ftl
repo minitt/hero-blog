@@ -1,4 +1,4 @@
-<#include "/common/header.ftl">
+<#include "common/header.ftl">
 <article class="main-content page-page">
     <div class="post-header">
         <h1 class="post-title" itemprop="name headline">${article.title}</h1>
@@ -102,4 +102,4 @@
     };
     postDirectoryBuild();
 </script>
-<#include "/common/footer.ftl">
+<#include "common/footer.ftl">

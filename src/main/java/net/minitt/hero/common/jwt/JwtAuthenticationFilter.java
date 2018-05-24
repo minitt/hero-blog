@@ -13,7 +13,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import net.minitt.hero.common.spring.SecurityUser;
 
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
@@ -28,26 +31,28 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
 		if (header == null || !header.startsWith("Bearer ")) {
 			chain.doFilter(req, res);
-			return;
-		}
-		try {
-			UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-			chain.doFilter(req, res);
-		}catch(Exception e) {
-			res.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+		}else {
+			try {
+				UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+//				res.addHeader("Authorization", "123");
+				chain.doFilter(req, res);
+			}catch(ExpiredJwtException e) {
+				res.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());//过期
+			}
 		}
 	}
 
-	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) throws Exception {
+	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
 		if (token != null) {
-			String user = Jwts.parser().setSigningKey("XdYKq22i@L'3}BdW{J;p'wSaRZSQs''v").parseClaimsJws(token.replace("Bearer ", ""))
-					.getBody().getSubject();
-			if (user != null) {
-				return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-			}
-			return null;
+			Claims c = Jwts.parser().setSigningKey("XdYKq22i@L'3}BdW{J;p'wSaRZSQs''v").parseClaimsJws(token.replace("Bearer ", ""))
+					.getBody();//ExpiredJwtException
+			/**
+			 * 缺失刷新逻辑
+			 */
+			SecurityUser user = new SecurityUser(c.get("username", String.class),c.get("id", Integer.class));
+			return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
 		}
 		return null;
 	}

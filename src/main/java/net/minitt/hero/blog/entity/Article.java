@@ -21,13 +21,13 @@ import net.minitt.hero.common.jpa.BaseEntity;
 public class Article extends BaseEntity {
 	public static final String FMT_TYPE_MD = "markdown";
 	public static final String FMT_TYPE_HTML = "html";
+	public static final String STATUS_PUBLISH = "publish";
+	public static final String STATUS_DRAFT = "draft";
 
 	private static final long serialVersionUID = 1L;
 
 	@NotBlank
 	private String title;
-	// 文章类型（如关于我们或者普通文章）
-	private String slug;
 	// 内容生成时的GMT unix时间戳
 	private Long createdTime;
 	// 内容更改时的GMT unix时间戳
@@ -58,10 +58,6 @@ public class Article extends BaseEntity {
 	private Integer commentsNum;
 	// 是否允许评论
 	private Boolean allowComment;
-	// 是否允许ping
-	private Boolean allowPing;
-	// 允许出现在聚合中
-	private Boolean allowFeed;
 
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinTable(name="relationships",joinColumns=
@@ -81,14 +77,6 @@ public class Article extends BaseEntity {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getSlug() {
-		return slug;
-	}
-
-	public void setSlug(String slug) {
-		this.slug = slug;
 	}
 
 	public Long getCreatedTime() {
@@ -195,22 +183,6 @@ public class Article extends BaseEntity {
 		this.allowComment = allowComment;
 	}
 
-	public Boolean getAllowPing() {
-		return allowPing;
-	}
-
-	public void setAllowPing(Boolean allowPing) {
-		this.allowPing = allowPing;
-	}
-
-	public Boolean getAllowFeed() {
-		return allowFeed;
-	}
-
-	public void setAllowFeed(Boolean allowFeed) {
-		this.allowFeed = allowFeed;
-	}
-
 	public Set<Meta> getTypeSet() {
 		return typeSet;
 	}
@@ -225,6 +197,18 @@ public class Article extends BaseEntity {
 
 	public void setTagSet(Set<Meta> tagSet) {
 		this.tagSet = tagSet;
+	}
+	
+	public void addTag(Meta tag) {
+		Set<Meta> tags = getTagSet();
+		if (tags == null) {
+			tags = new HashSet<Meta>();
+			setTagSet(tags);
+		}
+		tags.add(tag);
+		if(tag.getArticesByTag()==null)
+			tag.setArticesByTag(new HashSet<Article>());
+		tag.getArticesByTag().add(this);
 	}
 	
 	public void addType(Meta type) {

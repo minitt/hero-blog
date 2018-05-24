@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import net.minitt.hero.blog.service.ArticleService;
+import net.minitt.hero.common.spring.BaseFrontController;
 
 @Controller
-public class DynamicPageController {
+public class DynamicPageController extends BaseFrontController{
 	
 	@Autowired
 	private ArticleService articleService;
@@ -20,12 +21,12 @@ public class DynamicPageController {
 	@RequestMapping("/")
 	public String index(@PageableDefault(value = 20, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable,ModelMap model) {
 		model.put("aPage",articleService.findByPage(pageable));
-		return "index";
+		return render("index");
 	}
 	
 	@RequestMapping("/a/{id}")
 	public String article(@PathVariable int id,ModelMap model) {
 		model.put("article", articleService.findById(id).get());
-		return "article";
+		return render("article");
 	}
 }

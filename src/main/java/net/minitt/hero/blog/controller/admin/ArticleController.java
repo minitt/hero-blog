@@ -37,19 +37,19 @@ public class ArticleController extends BaseController{
 	}
 	
 	@RequestMapping("create")
-	public Map<String,Object> create(@RequestBody @Validated Article article,@RequestParam(value = "typeids[]")Set<Integer> typeArr){
+	public Map<String,Object> create(@RequestBody @Validated Article article,@RequestParam(value = "typeids[]")Set<Integer> typeArr,@RequestParam(value = "tagnames[]")Set<String> tagnameArr){
 		if(article==null)
 			throw new IllegalArgumentException("Parameter error!article is null");
-		article.setFmtType(Article.FMT_TYPE_MD);//暂时只支持markdown
-		articleService.save(article,typeArr);
+		article.setAuthor(getCurrUser().getUser());
+		articleService.save(article,typeArr,tagnameArr);
 		return renderSuceess();
 	}
 	
 	@RequestMapping("update")
-	public Map<String,Object> update(@RequestBody @Validated Article article,@RequestParam(value = "typeids[]")Set<Integer> typeArr){
+	public Map<String,Object> update(@RequestBody @Validated Article article,@RequestParam(value = "typeids[]")Set<Integer> typeArr,@RequestParam(value = "tagnames[]")Set<String> tagnameArr){
 		if(article==null)
 			throw new IllegalArgumentException("Parameter error!Article is null");
-		articleService.save(article,typeArr);
+		articleService.save(article,typeArr,tagnameArr);
 		return renderSuceess();
 	}
 	

@@ -44,6 +44,7 @@ public class MetaServiceImpl implements MetaService{
 				if(!StringUtils.isEmpty(meta.getName())){
 					expressions.add(cb.like(root.get("name"), "%"+meta.getName()+"%"));
 				}
+				expressions.add(cb.equal(root.get("type"), Meta.TYPE_CATEGORY));
 				return predicate;
 			}
 		};

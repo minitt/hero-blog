@@ -45,8 +45,8 @@ spring:
 #      password: $2a$10$Ug0uAUpuC8V.Titr/jlfVu/Bm8EbQmIKpNf7zIrYwmwPM281p/kGi
 #debug: true
 
-logging:
-  file: ./logs/hero-blog.log
+#logging:
+#  file: ./logs/hero-blog.log
 #  level:
 #    org.hibernate: debug
 #    org.hibernate.SQL: debug #hibernate语句文号参数

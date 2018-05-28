@@ -29,7 +29,7 @@ public abstract class BaseController {
 	
 	protected Map<String,Object> renderJson(Optional<?> p) {
 		Map<String,Object> m = new HashMap<String,Object>();
-		m.put("data", p);
+		m.put("data", p.get());
 		m.put("code", SUCCESS_CODE);
 		return m;
 	}

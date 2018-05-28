@@ -45,6 +45,15 @@ public class ArticleController extends BaseController{
 		return renderSuceess();
 	}
 	
+	@RequestMapping("draft")
+	public Map<String,Object> draft(@RequestBody @Validated Article article,@RequestParam(value = "typeids[]")Set<Integer> typeArr,@RequestParam(value = "tagnames[]")Set<String> tagnameArr){
+		if(article==null)
+			throw new IllegalArgumentException("Parameter error!article is null");
+		article.setAuthor(getCurrUser().getUser());
+		articleService.draft(article,typeArr,tagnameArr);
+		return renderSuceess();
+	}
+	
 	@RequestMapping("update")
 	public Map<String,Object> update(@RequestBody @Validated Article article,@RequestParam(value = "typeids[]")Set<Integer> typeArr,@RequestParam(value = "tagnames[]")Set<String> tagnameArr){
 		if(article==null)

@@ -6,12 +6,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +34,9 @@ import net.minitt.hero.blog.service.MetaService;
 @Service
 @Transactional(readOnly = true)
 public class ArticleServiceImpl implements ArticleService {
+	@PersistenceContext 
+    private EntityManager entityManager;
+	
 	@Autowired
     private ArticleDao articleDao;
 	
@@ -82,6 +90,12 @@ public class ArticleServiceImpl implements ArticleService {
 	public Article save(Article article,Set<Integer> types,Set<String> tagnameArr) {
 		return save(article,types,tagnameArr,Article.STATUS_PUBLISH);
 	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public Article draft(Article article,Set<Integer> types,Set<String> tagnameArr) {
+		return save(article,types,tagnameArr,Article.STATUS_DRAFT);
+	}
 
 	@Override
 	@Transactional(readOnly = false)
@@ -117,7 +131,19 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public Optional<Article> findById(Integer id) {
-		return articleDao.findById(id);
+		return articleDao.findOne(new Specification<Article>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				Predicate predicate = cb.conjunction();
+				root.fetch("typeSet",JoinType.INNER);
+				root.fetch("tagSet",JoinType.INNER);
+				List<Expression<Boolean>> expressions = predicate.getExpressions();
+				expressions.add(cb.equal(root.get("id"), id));
+				return predicate;
+			}
+			
+		});
 	}
 
 	@Override

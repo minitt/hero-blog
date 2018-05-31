@@ -136,8 +136,8 @@ public class ArticleServiceImpl implements ArticleService {
 			@Override
 			public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				Predicate predicate = cb.conjunction();
-				root.fetch("typeSet",JoinType.INNER);
-				root.fetch("tagSet",JoinType.INNER);
+				root.fetch("typeSet",JoinType.LEFT);
+				root.fetch("tagSet",JoinType.LEFT);
 				List<Expression<Boolean>> expressions = predicate.getExpressions();
 				expressions.add(cb.equal(root.get("id"), id));
 				return predicate;

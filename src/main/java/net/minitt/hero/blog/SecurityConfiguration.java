@@ -50,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 					Authentication authentication) throws IOException, ServletException {
 				SecurityUser u = (SecurityUser) authentication.getPrincipal();
 				String token = Jwts.builder().claim("username", u.getUsername()).claim("id", u.getId())
-						.setExpiration(new Date(System.currentTimeMillis() + 30 * 60 * 1000))//过期时间30分钟
+						.setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))//过期时间30分钟
 						.signWith(SignatureAlgorithm.HS512, "XdYKq22i@L'3}BdW{J;p'wSaRZSQs''v").compact();
 				response.setCharacterEncoding("UTF-8");
 				response.setContentType("application/json; charset=utf-8");  

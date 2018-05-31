@@ -1,0 +1,247 @@
+@charset "utf-8";
+/*
+ * @author <a href="http://www.minitt.net">minitt</a>
+ * @version 1.0, May 5 2018
+*/
+
+html {
+    height: 100%;
+    max-height: 100%;
+    font-size: 16px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+    height: 100%;
+    max-height: 100%;
+    font-size: 100%;
+    margin: 0;
+    line-height: 1.75em;
+    letter-spacing: 0.01rem;
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.6);
+    text-rendering: geometricPrecision;
+    -webkit-font-feature-settings: "kern" 1;
+            font-feature-settings: "kern" 1;
+}
+
+a {
+    text-decoration: none;
+    outline-width: 0;
+    outline: none;
+    color: #000000;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+	color: #586069;
+}
+
+img {
+    max-width: 100%;
+    vertical-align: middle;
+    border: 0;
+    height: auto;
+    -ms-interpolation-mode: bicubic;
+    overflow: hidden;
+    font-size: 12px;
+}
+
+header {
+	width: 100%;
+    height: 64px;
+    line-height: 64px;
+    position: relative;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    border-bottom: 1px solid #e1e4e8;
+    box-shadow: rgba(0,0,0,0.05) 0px 1px 7px;
+    background-color: #fff;
+    z-index: 1;
+}
+
+header .logo {
+	position: absolute;
+    left: 20px;
+}
+
+header .wrapper {
+	max-width: 868px;
+	margin: 0 auto;
+	padding: 0 20px;
+    text-align: center;
+}
+
+header .search-form{
+	display: inline-block;
+}
+
+header .search-form input {
+	font-size: 14px;
+    line-height: 30px;
+    top: 0;
+    left: 0;
+    height: 30px;
+    padding: 0 40px 0 18px;
+    color: #313131;
+    border: 1px solid #0080ff;
+    border-radius: 20px;
+    outline: 0;
+    background-color: #fff;
+    -webkit-appearance: none;
+}
+
+header .search-form i {
+	position: relative;
+	left: -35px;
+	cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+	header .wrapper > a:first-child {
+		display: block;
+	}
+	header .wrapper a {
+	    display: none;
+	}
+	header .search-form {
+		display: none;
+	}
+	main .directory-content {
+		display: none;
+	}
+}
+
+header .wrapper a {
+	color: #24292e;
+    padding: 0 10px;
+    font-size: 16px;
+}
+
+main {
+    margin: 75px auto;
+    max-width: 868px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+main .article-item {
+	border-bottom: 1px dotted #e1e4e8;
+}
+
+main .article-item .tips {
+	color: rgba(0,0,0,0.54);
+	font-size: 14px;
+}
+main .article-item .tips>a {
+	color: #fff;
+    border: 1px solid #6fa3ef;
+    border-radius: 15px;
+    background: #6fa3ef;
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 600;
+    display: inline-block;
+    margin: 4px 4px 0 0;
+    padding: 0 10px;
+    transition-duration: .4s;
+    letter-spacing: 0;
+}
+
+main .article-item .tips>a:hover {
+	background: #fff;
+	color: #000;
+}
+
+footer {
+	margin-top: 20px;
+	font-size: 14px;
+	text-align: right;
+}
+
+footer .social-list a {
+	padding: 0 10px;
+}
+
+.directory-content {
+	position: relative;
+	z-index: 0;
+	text-align: right;
+	overflow: hidden;
+}
+
+.directory-content.initial {
+	opacity: 0
+}
+
+.directory-content.pinned {
+	opacity: 1
+}
+
+.directory-content.unpinned {
+	opacity: 1
+}
+
+.directory-content.headroom--top {
+	opacity: 0
+}
+
+.directory-content.headroom--not-top {
+	-webkit-transition: opacity .5s ease-in-out;
+	transition: opacity .5s ease-in-out;
+	opacity: 1
+}
+
+#directory {
+	margin-left: 5px;
+	position: fixed;
+	z-index: 0;
+	top: 100px;
+	display: inline-block;
+	text-align: left
+}
+
+#directory li, #directory ul {
+	margin: 0;
+	padding-left: 0;
+	list-style: none
+}
+
+#directory>ul {
+	position: relative;
+	border-left: 1px solid #ddd
+}
+
+#directory>ul>li::before {
+	position: relative;
+	top: 0;
+	left: -4px;
+	display: inline-block;
+	width: 7px;
+	height: 7px;
+	content: '';
+	border-radius: 50%;
+	background-color: #eb5055
+}
+
+#directory ul li a {
+	display: inline-table;
+	margin-left: 5px;
+	white-space: nowrap
+}
+
+#directory ul li ul li a {
+	margin-left: 20px;
+	white-space: nowrap;
+	color: #5f5f5f
+}
+
+#directory ul li ul li ul li a {
+	margin-left: 30px;
+	color: #5f5f5f
+}
+
+#directory a:hover {
+	color: #eb5055
+}

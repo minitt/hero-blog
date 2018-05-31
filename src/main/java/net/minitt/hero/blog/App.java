@@ -47,18 +47,18 @@ public class App {
 		return mapper;
 	}
 	
-	@Bean  
-	public CommandLineRunner customFreemarker(FreeMarkerViewResolver resolver) {  
-	    return new CommandLineRunner() {  
-	        @Override  
-	        public void run(String... strings) throws Exception {  
-	            //添加自定义解析器  
-	            Map<String,Object> map = resolver.getAttributesMap();
-	            map.put("htmlToText", new HtmlToTextMethod());
-	            map.put("mdToHtml", new MdToHtmlMethod());
-	            map.put("unixTimestamp", new UnixTimestampMethod());
-	        }  
-	    };  
+	@Bean
+	public CommandLineRunner customFreemarker(FreeMarkerViewResolver resolver) {
+		return new CommandLineRunner() {
+		    @Override
+		    public void run(String... strings) throws Exception {
+		        //添加自定义解析器
+				Map<String,Object> map = resolver.getAttributesMap();
+				map.put("htmlToText", new HtmlToTextMethod());
+				map.put("mdToHtml", new MdToHtmlMethod());
+				map.put("unixTimestamp", new UnixTimestampMethod());
+		    }
+		};
 	}
 
 	public static void main(String[] args) throws Exception {

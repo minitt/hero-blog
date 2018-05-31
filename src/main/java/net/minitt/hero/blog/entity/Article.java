@@ -15,8 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
-import org.hibernate.annotations.Where;
-
 import net.minitt.hero.common.jpa.BaseEntity;
 
 @Entity
@@ -62,17 +60,15 @@ public class Article extends BaseEntity {
 	private Boolean allowComment;
 
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinTable(name="relationships",joinColumns=
+	@JoinTable(name="article_type",joinColumns=
             @JoinColumn(name="article_id"),
         inverseJoinColumns=@JoinColumn(name="meta_id"))
-	@Where(clause="type='category'")
 	private Set<Meta> typeSet;
 	
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinTable(name="relationships",joinColumns=
+	@JoinTable(name="article_tag",joinColumns=
             @JoinColumn(name="article_id"),
         inverseJoinColumns=@JoinColumn(name="meta_id"))
-	@Where(clause="type='tag'")
 	private Set<Meta> tagSet;
 
 	public String getTitle() {

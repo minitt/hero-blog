@@ -1,4 +1,4 @@
-package net.minitt.hero.blog;
+package net.minitt.hero.config;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,9 +29,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import net.minitt.hero.blog.service.UserService;
-import net.minitt.hero.common.jwt.JwtAuthenticationFilter;
-import net.minitt.hero.common.jwt.JwtLoginFilter;
-import net.minitt.hero.common.spring.SecurityUser;
+import net.minitt.hero.core.security.JwtAuthenticationFilter;
+import net.minitt.hero.core.security.JwtLoginFilter;
+import net.minitt.hero.core.security.SecurityUser;
 
 @Configuration
 @Order(SecurityProperties.DEFAULT_FILTER_ORDER)

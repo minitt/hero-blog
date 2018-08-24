@@ -1,4 +1,4 @@
-package net.minitt.hero.common.spring;
+package net.minitt.hero.core.base;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import net.minitt.hero.core.security.SecurityUser;
 
 public abstract class BaseController {
 	

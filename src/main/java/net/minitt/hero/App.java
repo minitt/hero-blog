@@ -1,4 +1,4 @@
-package net.minitt.hero.blog;
+package net.minitt.hero;
 
 import java.util.Map;
 
@@ -16,9 +16,9 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
-import net.minitt.hero.freemark.method.HtmlToTextMethod;
-import net.minitt.hero.freemark.method.MdToHtmlMethod;
-import net.minitt.hero.freemark.method.UnixTimestampMethod;
+import net.minitt.hero.core.freemark.method.HtmlToTextMethod;
+import net.minitt.hero.core.freemark.method.MdToHtmlMethod;
+import net.minitt.hero.core.freemark.method.UnixTimestampMethod;
 
 //@SpringBootApplication 相当于@Configuration+@EnableAutoConfiguration+@ComponentScan 见源码
 @Configuration

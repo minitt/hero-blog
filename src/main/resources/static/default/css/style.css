@@ -124,6 +124,7 @@ main {
     max-width: 868px;
     padding: 0 20px;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 main .article-item {

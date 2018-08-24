@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 80
   tomcat.max-threads: 200
   tomcat.uri-encoding: UTF-8
 
@@ -24,6 +24,12 @@ spring:
 #  main:
 #    banner-mode: "off" #启动控制台的logo
   data:
+    elasticsearch:
+      # cluster-name: heirou 集群配置
+      repositories:
+        #开启elasticsearch
+        enabled: true
+      cluster-nodes: 127.0.0.1:9300
     web:
       pageable:
         one-indexed-parameters: true #分页对象从第1页开始（默认是从第0页）

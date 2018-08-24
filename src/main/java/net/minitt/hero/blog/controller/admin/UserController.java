@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.minitt.hero.blog.entity.User;
 import net.minitt.hero.blog.service.UserService;
-import net.minitt.hero.common.spring.BaseController;
+import net.minitt.hero.core.base.BaseController;
 
 @RestController
 @RequestMapping("admin/user")

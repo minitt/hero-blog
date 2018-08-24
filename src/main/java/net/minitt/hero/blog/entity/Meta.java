@@ -9,7 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 
-import net.minitt.hero.common.jpa.BaseEntity;
+import net.minitt.hero.core.base.BaseEntity;
 
 @Entity
 public class Meta extends BaseEntity {

@@ -1,4 +1,4 @@
-package net.minitt.hero.common.jwt;
+package net.minitt.hero.core.security;
 
 import java.io.BufferedReader;
 import java.io.IOException;

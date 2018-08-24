@@ -1,4 +1,4 @@
-package net.minitt.hero.common.jpa;
+package net.minitt.hero.core.base;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.lang.Nullable;
 
 @NoRepositoryBean
 public interface BaseDao<T> extends JpaRepository<T, Integer>,JpaSpecificationExecutor<T>{
@@ -23,8 +24,9 @@ public interface BaseDao<T> extends JpaRepository<T, Integer>,JpaSpecificationEx
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
 	public List<T> findAll(Specification<T> spec, Sort sort);
 //	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
-//	public T findOne(Serializable id);
+//	public Optional<T> findOne(@Nullable Specification<T> spec);
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
 	public Optional<T> findById(Integer id);
-	public List<T> findAllById(Iterable<Integer> ids);
+//	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
+//	public List<T> findAllById(Iterable<Integer> ids);
 }

@@ -5,9 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
@@ -15,9 +14,8 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.hibernate.Filter;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,18 +28,22 @@ import net.minitt.hero.blog.entity.Article;
 import net.minitt.hero.blog.entity.Meta;
 import net.minitt.hero.blog.service.ArticleService;
 import net.minitt.hero.blog.service.MetaService;
+import net.minitt.hero.blog.service.SearchService;
 
 @Service
 @Transactional(readOnly = true)
 public class ArticleServiceImpl implements ArticleService {
-	@PersistenceContext 
-    private EntityManager entityManager;
+	@Value("${spring.data.elasticsearch.repositories.enabled}")
+	private boolean isEs;
 	
 	@Autowired
     private ArticleDao articleDao;
 	
 	@Autowired
 	private MetaService metaService;
+	
+	@Autowired
+	private SearchService searchService;
 
 	@Override
 	public Page<Article> findByPage(Article searchArticle, Pageable pageable) {
@@ -58,22 +60,28 @@ public class ArticleServiceImpl implements ArticleService {
 		}
 		String categories = null;
 		String tags = null;
+		if(tagnameArr!=null) {
+			List<Meta> tagList = new ArrayList<Meta>();
+			for(String tagname:tagnameArr) {
+				Optional<Meta> tagmeta = metaService.findOneByName("test");
+				if(tagmeta.isPresent()) {
+					article.addTag(tagmeta.get());
+					tagList.add(tagmeta.get());
+				}else {
+					Meta tag = new Meta();
+					tag.setName(tagname);
+					tag.setType(Meta.TYPE_TAG);
+					tag.setOrderby(0);
+					article.addTag(metaService.save(tag));
+					tagList.add(tag);
+				}
+			}
+			tags = Meta.fetchNames(tagList);
+		}
 		if(types!=null) {
 			List<Meta> typeList = metaService.findAllByIds(types);
 			categories = Meta.fetchNames(typeList);
 			article.addTypes(typeList);
-		}
-		if(tagnameArr!=null) {
-			List<Meta> tagList = new ArrayList<Meta>();
-			for(String tagname:tagnameArr) {
-				Meta tag = new Meta();
-				tag.setName(tagname);
-				tag.setType(Meta.TYPE_TAG);
-				tag.setOrderby(0);
-				article.addTag(metaService.save(tag));
-				tagList.add(tag);
-			}
-			tags = Meta.fetchNames(tagList);
 		}
 		article.setFmtType(Article.FMT_TYPE_MD);//暂时只支持markdown
 		article.setModifiedTime(new Date().getTime());
@@ -82,6 +90,9 @@ public class ArticleServiceImpl implements ArticleService {
 		article.setHits(0);
 		article.setStatus(status);
 		article.setAllowComment(false);
+		if(isEs) {
+			searchService.saveSearch(article);
+		}
 		return articleDao.save(article);
 	}
 
@@ -142,7 +153,6 @@ public class ArticleServiceImpl implements ArticleService {
 				expressions.add(cb.equal(root.get("id"), id));
 				return predicate;
 			}
-			
 		});
 	}
 

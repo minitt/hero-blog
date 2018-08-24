@@ -1,4 +1,4 @@
-package net.minitt.hero.common.jpa;
+package net.minitt.hero.core.base;
 
 import javax.persistence.*;
 

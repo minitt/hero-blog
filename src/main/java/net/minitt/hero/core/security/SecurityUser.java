@@ -1,4 +1,4 @@
-package net.minitt.hero.common.spring;
+package net.minitt.hero.core.security;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -2,7 +2,7 @@ package net.minitt.hero.blog.entity;
 
 import javax.persistence.Entity;
 
-import net.minitt.hero.common.jpa.BaseEntity;
+import net.minitt.hero.core.base.BaseEntity;
 
 @Entity
 public class SysConfig extends BaseEntity{

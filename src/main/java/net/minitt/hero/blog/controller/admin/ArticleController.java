@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.minitt.hero.blog.entity.Article;
 import net.minitt.hero.blog.service.ArticleService;
-import net.minitt.hero.common.spring.BaseController;
+import net.minitt.hero.core.base.BaseController;
 
 @RestController
 @RequestMapping("admin/article")
@@ -58,6 +58,7 @@ public class ArticleController extends BaseController{
 	public Map<String,Object> update(@RequestBody @Validated Article article,@RequestParam(value = "typeids[]")Set<Integer> typeArr,@RequestParam(value = "tagnames[]")Set<String> tagnameArr){
 		if(article==null)
 			throw new IllegalArgumentException("Parameter error!Article is null");
+		article.setAuthor(getCurrUser().getUser());
 		articleService.save(article,typeArr,tagnameArr);
 		return renderSuceess();
 	}

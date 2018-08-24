@@ -15,7 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
-import net.minitt.hero.common.jpa.BaseEntity;
+import net.minitt.hero.core.base.BaseEntity;
 
 @Entity
 public class Article extends BaseEntity {
@@ -34,7 +34,7 @@ public class Article extends BaseEntity {
 	private Long modifiedTime;
 	// 内容文字
 	@Lob
-    @Basic(fetch=FetchType.LAZY)
+	@Basic(fetch = FetchType.LAZY)
 	private String content;
 	// 内容作者
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -59,16 +59,12 @@ public class Article extends BaseEntity {
 	// 是否允许评论
 	private Boolean allowComment;
 
-	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinTable(name="article_type",joinColumns=
-            @JoinColumn(name="article_id"),
-        inverseJoinColumns=@JoinColumn(name="meta_id"))
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "article_type", joinColumns = @JoinColumn(name = "article_id"), inverseJoinColumns = @JoinColumn(name = "meta_id"))
 	private Set<Meta> typeSet;
-	
-	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinTable(name="article_tag",joinColumns=
-            @JoinColumn(name="article_id"),
-        inverseJoinColumns=@JoinColumn(name="meta_id"))
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "article_tag", joinColumns = @JoinColumn(name = "article_id"), inverseJoinColumns = @JoinColumn(name = "meta_id"))
 	private Set<Meta> tagSet;
 
 	public String getTitle() {
@@ -198,7 +194,7 @@ public class Article extends BaseEntity {
 	public void setTagSet(Set<Meta> tagSet) {
 		this.tagSet = tagSet;
 	}
-	
+
 	public void addTag(Meta tag) {
 		Set<Meta> tags = getTagSet();
 		if (tags == null) {
@@ -206,11 +202,11 @@ public class Article extends BaseEntity {
 			setTagSet(tags);
 		}
 		tags.add(tag);
-		if(tag.getArticesByTag()==null)
+		if (tag.getArticesByTag() == null)
 			tag.setArticesByTag(new HashSet<Article>());
 		tag.getArticesByTag().add(this);
 	}
-	
+
 	public void addType(Meta type) {
 		Set<Meta> types = getTypeSet();
 		if (types == null) {
@@ -220,7 +216,7 @@ public class Article extends BaseEntity {
 		types.add(type);
 		type.getArticesByType().add(this);
 	}
-	
+
 	public void addTypes(Collection<Meta> types) {
 		Set<Meta> thistypes = getTypeSet();
 		if (thistypes == null) {
@@ -228,18 +224,22 @@ public class Article extends BaseEntity {
 			setTypeSet(thistypes);
 		}
 		thistypes.addAll(types);
-		for(Meta m:types) {
+		for (Meta m : types) {
 			m.getArticesByType().add(this);
 		}
 	}
 
-	public boolean equals (Object obj) {
-		if (null == obj) return false;
-		if (!(obj instanceof Article)) return false;
+	public boolean equals(Object obj) {
+		if (null == obj)
+			return false;
+		if (!(obj instanceof Article))
+			return false;
 		else {
 			Article article = (Article) obj;
-			if (null == this.getId() || null == article.getId()) return false;
-			else return (this.getId().equals(article.getId()));
+			if (null == this.getId() || null == article.getId())
+				return false;
+			else
+				return (this.getId().equals(article.getId()));
 		}
 	}
 

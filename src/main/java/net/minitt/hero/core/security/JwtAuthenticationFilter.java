@@ -1,4 +1,4 @@
-package net.minitt.hero.common.jwt;
+package net.minitt.hero.core.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import net.minitt.hero.common.spring.SecurityUser;
 
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
@@ -48,9 +47,6 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 		if (token != null) {
 			Claims c = Jwts.parser().setSigningKey("XdYKq22i@L'3}BdW{J;p'wSaRZSQs''v").parseClaimsJws(token.replace("Bearer ", ""))
 					.getBody();//ExpiredJwtException
-			/**
-			 * 缺失刷新逻辑
-			 */
 			SecurityUser user = new SecurityUser(c.get("username", String.class),c.get("id", Integer.class));
 			return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
 		}

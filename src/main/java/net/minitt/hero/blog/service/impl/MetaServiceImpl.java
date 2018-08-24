@@ -1,6 +1,7 @@
 package net.minitt.hero.blog.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -34,11 +35,8 @@ public class MetaServiceImpl implements MetaService{
 	}
 	
 	private Specification<Meta> getSpec(final Meta meta) {
-		return new Specification<Meta>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Predicate toPredicate(Root<Meta> root,
-					CriteriaQuery<?> query, CriteriaBuilder cb) {
+		return (Root<Meta> root,
+				CriteriaQuery<?> query, CriteriaBuilder cb) -> {
 				Predicate predicate = cb.conjunction();
 				List<Expression<Boolean>> expressions = predicate.getExpressions();
 				if(!StringUtils.isEmpty(meta.getName())){
@@ -46,8 +44,7 @@ public class MetaServiceImpl implements MetaService{
 				}
 				expressions.add(cb.equal(root.get("type"), Meta.TYPE_CATEGORY));
 				return predicate;
-			}
-		};
+			};
 	}
 
 	@Override
@@ -80,5 +77,19 @@ public class MetaServiceImpl implements MetaService{
 	@Override
 	public List<Meta> findAllByIds(Set<Integer> ids) {
 		return metaDao.findAllById(ids);
+	}
+
+	@Override
+	public Optional<Meta> findOneByName(String name) {
+		return metaDao.findOne(new Specification<Meta>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Predicate toPredicate(Root<Meta> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				Predicate predicate = cb.conjunction();
+				List<Expression<Boolean>> expressions = predicate.getExpressions();
+				expressions.add(cb.equal(root.get("name"), name));
+				return predicate;
+			}
+		});
 	}
 }

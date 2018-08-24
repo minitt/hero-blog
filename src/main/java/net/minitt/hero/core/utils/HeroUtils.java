@@ -1,4 +1,4 @@
-package net.minitt.hero.utils;
+package net.minitt.hero.core.utils;
 
 import java.util.Arrays;
 import java.util.List;

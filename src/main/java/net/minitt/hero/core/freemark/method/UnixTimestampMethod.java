@@ -1,4 +1,4 @@
-package net.minitt.hero.freemark.method;
+package net.minitt.hero.core.freemark.method;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

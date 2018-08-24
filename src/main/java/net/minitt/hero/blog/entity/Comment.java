@@ -5,7 +5,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import net.minitt.hero.common.jpa.BaseEntity;
+import net.minitt.hero.core.base.BaseEntity;
 
 @Entity
 public class Comment extends BaseEntity{

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import net.minitt.hero.common.jpa.BaseEntity;
+import net.minitt.hero.core.base.BaseEntity;
 
 @Entity
 public class User extends BaseEntity{

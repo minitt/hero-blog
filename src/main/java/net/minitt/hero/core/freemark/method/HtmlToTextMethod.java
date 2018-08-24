@@ -1,4 +1,4 @@
-package net.minitt.hero.freemark.method;
+package net.minitt.hero.core.freemark.method;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateNumberModel;
 import freemarker.template.TemplateScalarModel;
-import net.minitt.hero.utils.HeroUtils;
+import net.minitt.hero.core.utils.HeroUtils;
 
 public class HtmlToTextMethod implements TemplateMethodModelEx {
 

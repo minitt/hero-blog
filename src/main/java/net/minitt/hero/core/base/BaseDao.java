@@ -20,13 +20,11 @@ public interface BaseDao<T> extends JpaRepository<T, Integer>,JpaSpecificationEx
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
 	public List<T> findAll();
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
-	public Page<T> findAll(Specification<T> spec, Pageable page);
+	public Page<T> findAll(@Nullable Specification<T> spec, Pageable page);
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
-	public List<T> findAll(Specification<T> spec, Sort sort);
-//	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
-//	public Optional<T> findOne(@Nullable Specification<T> spec);
+	public List<T> findAll(@Nullable Specification<T> spec, Sort sort);
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
-	public Optional<T> findById(Integer id);
-//	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
-//	public List<T> findAllById(Iterable<Integer> ids);
+	public Optional<T> findOne(@Nullable Specification<T> spec);
+	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value ="true")})
+	public List<T> findAllById(Iterable<Integer> ids);
 }

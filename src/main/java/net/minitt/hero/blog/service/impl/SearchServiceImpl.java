@@ -35,8 +35,9 @@ public class SearchServiceImpl implements SearchService{
 	@Transactional(readOnly = false)
 	public Integer saveSearch(Article article) {
 		Search search = new Search();//搜索ES
+		search.setId(article.getId());
 		search.setTitle(article.getTitle());
-		if(article.getId()==null) {
+		if(article.getAuthor()!=null) {
 			search.setAuthor(article.getAuthor().getScreenName());
 		}
 		search.setCategories(article.getCategories());

@@ -11,7 +11,7 @@
 			<#if aPage??>
 			<#list aPage.content as a>
 			<article class="article-item">
-				<h1><a href="/a/${a.id!}">${a.title}</a></h1>
+				<h1><a href="${ctx.contextPath}/a/${a.id!}">${a.title}</a></h1>
 				<div class="tips">
 					<#if a.tagSet??>
 						<#list a.tagSet as tag>

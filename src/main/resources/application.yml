@@ -2,6 +2,9 @@ server:
   port: 80
   tomcat.max-threads: 200
   tomcat.uri-encoding: UTF-8
+  
+hero:
+  signature-key: XdYKq22i@L'3}BdW{J;p'wSaRZSQs''v
 
 spring:
   jpa:
@@ -9,12 +12,12 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: true #hibernate session open in view
-    #properties:
-      #javax.persistence.sharedCache.mode: ALL #hibernate二级缓存模式（ALL,ENABLE_SELECTIVE） 
-      #hibernate.generate_statistics: true
-      #hibernate.cache.use_second_level_cache: true
-      #hibernate.cache.use_query_cache: true
-      #hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+    properties:
+      javax.persistence.sharedCache.mode: ALL #hibernate二级缓存模式（ALL,ENABLE_SELECTIVE） 
+#      hibernate.generate_statistics: true #打开hibernate统计信息
+      hibernate.cache.use_second_level_cache: true
+      hibernate.cache.use_query_cache: true
+      hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     show-sql: true
   datasource: 
     driver-class-name: org.h2.Driver
@@ -25,7 +28,7 @@ spring:
 #    banner-mode: "off" #启动控制台的logo
   data:
     elasticsearch:
-      # cluster-name: heirou 集群配置
+      # cluster-name: heirou #集群配置
       repositories:
         #开启elasticsearch
         enabled: true

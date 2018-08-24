@@ -206,6 +206,20 @@ public class Article extends BaseEntity {
 			tag.setArticesByTag(new HashSet<Article>());
 		tag.getArticesByTag().add(this);
 	}
+	
+	public void addTags(Collection<Meta> tags) {
+		Set<Meta> thistags = getTagSet();
+		if (thistags == null) {
+			thistags = new HashSet<Meta>();
+			setTagSet(thistags);
+		}
+		thistags.addAll(tags);
+		for (Meta tag : tags) {
+			if (tag.getArticesByTag() == null)
+				tag.setArticesByTag(new HashSet<Article>());
+			tag.getArticesByTag().add(this);
+		}
+	}
 
 	public void addType(Meta type) {
 		Set<Meta> types = getTypeSet();

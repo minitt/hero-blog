@@ -2,6 +2,7 @@ package net.minitt.hero.core.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,9 +19,12 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
+	
+	private String signatureKey;
 
-	public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager,String signatureKey) {
 		super(authenticationManager);
+		this.signatureKey = signatureKey;
 	}
 
 	@Override
@@ -34,7 +38,6 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 			try {
 				UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
-//				res.addHeader("Authorization", "123");
 				chain.doFilter(req, res);
 			}catch(ExpiredJwtException e) {
 				res.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());//过期
@@ -45,9 +48,10 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
 		if (token != null) {
-			Claims c = Jwts.parser().setSigningKey("XdYKq22i@L'3}BdW{J;p'wSaRZSQs''v").parseClaimsJws(token.replace("Bearer ", ""))
+			Claims c = Jwts.parser().setSigningKey(signatureKey).parseClaimsJws(token.replace("Bearer ", ""))
 					.getBody();//ExpiredJwtException
-			SecurityUser user = new SecurityUser(c.get("username", String.class),c.get("id", Integer.class));
+			Map loginuser = c.get("loginuser",Map.class);
+			SecurityUser user = new SecurityUser(loginuser);
 			return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
 		}
 		return null;

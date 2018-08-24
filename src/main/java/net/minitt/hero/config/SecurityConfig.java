@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,10 +36,12 @@ import net.minitt.hero.core.security.SecurityUser;
 
 @Configuration
 @Order(SecurityProperties.DEFAULT_FILTER_ORDER)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private UserService userService;
 
+    @Value("{hero.signature-key}")
+	private String signatureKey;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -49,9 +52,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 					Authentication authentication) throws IOException, ServletException {
 				SecurityUser u = (SecurityUser) authentication.getPrincipal();
-				String token = Jwts.builder().claim("username", u.getUsername()).claim("id", u.getId())
+				String token = Jwts.builder().claim("loginuser", u)
 						.setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))//过期时间30分钟
-						.signWith(SignatureAlgorithm.HS512, "XdYKq22i@L'3}BdW{J;p'wSaRZSQs''v").compact();
+						.signWith(SignatureAlgorithm.HS512, signatureKey).compact();
 				response.setCharacterEncoding("UTF-8");
 				response.setContentType("application/json; charset=utf-8");  
 				PrintWriter out = response.getWriter();
@@ -81,7 +84,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 //.anyRequest().authenticated()
                 .and()
                 .addFilter(loginFilter)
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()));
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(),signatureKey));
     }
 
     @Override

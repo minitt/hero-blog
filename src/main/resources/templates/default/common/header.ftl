@@ -1,6 +1,6 @@
 <header>
     <div class="wrapper">
-        <a href="/" class="logo">
+        <a href="${ctx.contextPath}/" class="logo">
             <img src="${ctx.contextPath}/res/default/img/logo.png" style="background-image: none; background-color: transparent;">
         </a>
         <a href="">
@@ -15,9 +15,9 @@
         	<i class="icon iconfont icon-save"></i>
 			存档
         </a>
-        <form onsubmit="return false;" class="search-form">
-            <input type="text" placeholder="搜索..." maxlength="30" >
-            <i class="icon iconfont icon-search" onclick="alert(1);"></i>
+        <form action="${ctx.contextPath}/search" class="search-form" id="search-form">
+            <input type="text" placeholder="搜索..." value="${keyword!}" maxlength="30" name="keyword" />
+            <a href="javascript:void(0);" onclick="$('#search-form').submit();"><i class="icon iconfont icon-search"></i></a>
         </form>
     </div>
 </header>

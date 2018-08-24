@@ -92,10 +92,9 @@ header .search-form input {
     -webkit-appearance: none;
 }
 
-header .search-form i {
+header .search-form a {
 	position: relative;
 	left: -35px;
-	cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
@@ -113,7 +112,7 @@ header .search-form i {
 	}
 }
 
-header .wrapper a {
+header .wrapper > a {
 	color: #24292e;
     padding: 0 10px;
     font-size: 16px;

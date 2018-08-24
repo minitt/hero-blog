@@ -2,6 +2,7 @@ package net.minitt.hero.core.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -12,14 +13,25 @@ public class SecurityUser extends User{
 	
 	private Integer id;
 	
-	public SecurityUser(String username,Integer id) {
-		this(username,"",true, true, true, true,new ArrayList<>());
-		this.id = id;
+	private net.minitt.hero.blog.entity.User user;
+	
+	public SecurityUser(Map userMap) {
+		this((String)userMap.get("username"),"",true, true, true, true,new ArrayList<>());
+		Map u = (Map)userMap.get("user");
+		this.user = new net.minitt.hero.blog.entity.User();
+		this.id = (Integer)u.get("id");
+		this.user.setId((Integer)u.get("id"));
+		this.user.setUsername((String)u.get("username"));
+		this.user.setScreenName((String)u.get("screenName"));
+		this.user.setEmail((String)u.get("email"));
+		this.user.setCreatedTime((Long)u.get("createdTime"));
+		this.user.setActivatedTime((Long)u.get("activatedTime"));
 	}
 	
 	public SecurityUser(net.minitt.hero.blog.entity.User account) {
 		this(account.getUsername(),account.getPassword(),true, true, true, true,new ArrayList<>());
 		this.id = account.getId();
+		this.user = account;
 	}
 
 	public SecurityUser(String username, String password, boolean enabled,
@@ -37,10 +49,7 @@ public class SecurityUser extends User{
 	}
 	
 	public net.minitt.hero.blog.entity.User getUser() {
-		net.minitt.hero.blog.entity.User u = new net.minitt.hero.blog.entity.User();
-		u.setId(id);
-		u.setUsername(getUsername());
-		return u;
+		return user;
 	}
 
 }

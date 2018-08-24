@@ -45,12 +45,10 @@ public class DynamicPageController extends BaseFrontController{
 	}
 	
 	@RequestMapping("/search")
-	@ResponseBody
-	public String searchCity(@PageableDefault(value = 20, sort = { "createdTime" }, direction = Sort.Direction.DESC) Pageable pageable,String keyword) {
+	public String search(@PageableDefault(value = 20, sort = { "createdTime" }, direction = Sort.Direction.DESC) Pageable pageable,String keyword,ModelMap model) {
 		Page<Search> page = searchService.search(pageable, keyword);
-		for(Search s:page.getContent()) {
-			System.out.println("----"+s.getTitle());
-		}
-		return "OK";
+		model.put("sPage",page);
+		model.put("keyword", keyword);
+		return render("search");
 	}
 }

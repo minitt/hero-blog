@@ -8,9 +8,10 @@
 <link href="${ctx.contextPath}/res/default/css/style.css" rel="stylesheet">
 <link href="${ctx.contextPath}/res/default/css/md.css" rel="stylesheet">
 <link href="${ctx.contextPath}/res/default/css/xcode.min.css" rel="stylesheet">
-<link rel="stylesheet" href="${ctx.contextPath}/res/default/font/iconfont.css">
+<link href="${ctx.contextPath}/res/default/font/iconfont.css" rel="stylesheet">
 
 <script src="${ctx.contextPath}/res/default/js/jquery.min.js"></script>
 <script src="${ctx.contextPath}/res/default/js/instantclick.min.js"></script>
+<script src="${ctx.contextPath}/res/default/js/hero.js"></script>
 <#nested>
 </#macro>

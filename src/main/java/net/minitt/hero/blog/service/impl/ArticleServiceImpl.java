@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -60,20 +59,19 @@ public class ArticleServiceImpl implements ArticleService {
 		}
 		String categories = null;
 		String tags = null;
+		List<Meta> tagList = new ArrayList<Meta>();
 		if(tagnameArr!=null) {
-			List<Meta> tagList = new ArrayList<Meta>();
 			for(String tagname:tagnameArr) {
-				Optional<Meta> tagmeta = metaService.findOneByName("test");
-				if(tagmeta.isPresent()) {
-					article.addTag(tagmeta.get());
-					tagList.add(tagmeta.get());
-				}else {
+				Optional<Meta> tagmeta = metaService.findOneByName(tagname);
+				if(!tagmeta.isPresent()) {
 					Meta tag = new Meta();
 					tag.setName(tagname);
 					tag.setType(Meta.TYPE_TAG);
 					tag.setOrderby(0);
-					article.addTag(metaService.save(tag));
+					metaService.save(tag);
 					tagList.add(tag);
+				}else {
+					tagList.add(tagmeta.get());
 				}
 			}
 			tags = Meta.fetchNames(tagList);
@@ -82,6 +80,9 @@ public class ArticleServiceImpl implements ArticleService {
 			List<Meta> typeList = metaService.findAllByIds(types);
 			categories = Meta.fetchNames(typeList);
 			article.addTypes(typeList);
+		}
+		if(tagList.size()>0) {
+			article.addTags(tagList);
 		}
 		article.setFmtType(Article.FMT_TYPE_MD);//暂时只支持markdown
 		article.setModifiedTime(new Date().getTime());
@@ -158,6 +159,15 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public Page<Article> findByPage(Pageable pageable) {
-		return articleDao.findAll(pageable);
+		return articleDao.findAll(new Specification<Article>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				Predicate predicate = cb.conjunction();
+				root.fetch("typeSet",JoinType.LEFT);
+				root.fetch("tagSet",JoinType.LEFT);
+				return predicate;
+			}
+		},pageable);
 	}
 }

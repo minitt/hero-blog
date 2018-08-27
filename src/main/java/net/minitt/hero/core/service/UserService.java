@@ -1,9 +1,9 @@
-package net.minitt.hero.blog.service;
+package net.minitt.hero.core.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import net.minitt.hero.blog.entity.User;
+import net.minitt.hero.core.entity.User;
 
 public interface UserService {
 	public User findUser(String username);

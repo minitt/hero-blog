@@ -36,4 +36,44 @@
 		<!-- <cacheEventListenerFactory class="com.xxxx.CustomerCacheEventListenerFactory" 
 			/> -->
 	</cache>
+	<cache name="net.minitt.hero.blog.entity.Article"
+		maxEntriesLocalHeap="50" eternal="false" overflowToDisk="false"
+		timeToLiveSeconds="120">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	<cache name="net.minitt.hero.core.entity.SysConfig"
+		maxEntriesLocalHeap="50" eternal="false" overflowToDisk="false"
+		timeToLiveSeconds="120">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	<cache name="net.minitt.hero.core.entity.User"
+		maxEntriesLocalHeap="50" eternal="false" overflowToDisk="false"
+		timeToLiveSeconds="120">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	<cache name="net.minitt.hero.core.entity.Role"
+		maxEntriesLocalHeap="50" eternal="false" overflowToDisk="false"
+		timeToLiveSeconds="120">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	<cache name="net.minitt.hero.core.entity.Log"
+		maxEntriesLocalHeap="50" eternal="false" overflowToDisk="false"
+		timeToLiveSeconds="120">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	<cache name="net.minitt.hero.blog.entity.Comment"
+		maxEntriesLocalHeap="50" eternal="false" overflowToDisk="false"
+		timeToLiveSeconds="120">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	<cache name="net.minitt.hero.blog.entity.Meta"
+		maxEntriesLocalHeap="50" eternal="false" overflowToDisk="false"
+		timeToLiveSeconds="120">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	<cache name="net.minitt.hero.core.entity.Resource"
+		maxEntriesLocalHeap="50" eternal="false" overflowToDisk="false"
+		timeToLiveSeconds="120">
+		<persistence strategy="localTempSwap" />
+	</cache>
 </ehcache>

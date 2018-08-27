@@ -10,9 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import net.minitt.hero.App;
-import net.minitt.hero.blog.dao.UserDao;
 import net.minitt.hero.blog.entity.Meta;
 import net.minitt.hero.blog.service.MetaService;
+import net.minitt.hero.core.dao.UserDao;
 
 /**
  * Unit test for simple App.

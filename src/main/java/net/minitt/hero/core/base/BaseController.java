@@ -22,6 +22,13 @@ public abstract class BaseController {
 		return m;
 	}
 	
+	protected Map<String,Object> renderJson(Map<?,?> p) {
+		Map<String,Object> m = new HashMap<String,Object>();
+		m.put("data", p);
+		m.put("code", SUCCESS_CODE);
+		return m;
+	}
+	
 	protected Map<String,Object> renderJson(List<?> p) {
 		Map<String,Object> m = new HashMap<String,Object>();
 		m.put("data", p);

@@ -13,12 +13,12 @@ public class SecurityUser extends User{
 	
 	private Integer id;
 	
-	private net.minitt.hero.blog.entity.User user;
+	private net.minitt.hero.core.entity.User user;
 	
 	public SecurityUser(Map userMap) {
 		this((String)userMap.get("username"),"",true, true, true, true,new ArrayList<>());
 		Map u = (Map)userMap.get("user");
-		this.user = new net.minitt.hero.blog.entity.User();
+		this.user = new net.minitt.hero.core.entity.User();
 		this.id = (Integer)u.get("id");
 		this.user.setId((Integer)u.get("id"));
 		this.user.setUsername((String)u.get("username"));
@@ -28,10 +28,11 @@ public class SecurityUser extends User{
 		this.user.setActivatedTime((Long)u.get("activatedTime"));
 	}
 	
-	public SecurityUser(net.minitt.hero.blog.entity.User account) {
+	public SecurityUser(net.minitt.hero.core.entity.User account) {
 		this(account.getUsername(),account.getPassword(),true, true, true, true,new ArrayList<>());
 		this.id = account.getId();
 		this.user = account;
+		this.user.setRole(null);
 	}
 
 	public SecurityUser(String username, String password, boolean enabled,
@@ -48,7 +49,7 @@ public class SecurityUser extends User{
 		this.id = id;
 	}
 	
-	public net.minitt.hero.blog.entity.User getUser() {
+	public net.minitt.hero.core.entity.User getUser() {
 		return user;
 	}
 

@@ -1,4 +1,4 @@
-package net.minitt.hero.blog.controller.admin;
+package net.minitt.hero.core.controller;
 
 import java.util.Map;
 
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.minitt.hero.blog.entity.User;
-import net.minitt.hero.blog.service.UserService;
 import net.minitt.hero.core.base.BaseController;
+import net.minitt.hero.core.entity.User;
+import net.minitt.hero.core.service.UserService;
 
 @RestController
 @RequestMapping("admin/user")

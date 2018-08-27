@@ -1,4 +1,4 @@
-package net.minitt.hero.blog.entity;
+package net.minitt.hero.core.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

@@ -6,6 +6,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import net.minitt.hero.core.base.BaseEntity;
+import net.minitt.hero.core.entity.User;
 
 @Entity
 public class Comment extends BaseEntity{

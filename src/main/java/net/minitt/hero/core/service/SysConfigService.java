@@ -1,4 +1,4 @@
-package net.minitt.hero.blog.service;
+package net.minitt.hero.core.service;
 
 public interface SysConfigService {
 

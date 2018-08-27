@@ -1,4 +1,4 @@
-package net.minitt.hero.blog.entity;
+package net.minitt.hero.core.entity;
 
 import javax.persistence.Entity;
 
@@ -11,6 +11,8 @@ public class SysConfig extends BaseEntity{
 	// 配置名称
     private String key;
     private String type;
+    private String title;
+    private Integer grp;
     private String options;
     // 配置值
     private String val;
@@ -64,6 +66,22 @@ public class SysConfig extends BaseEntity{
 
 	public void setSort(Integer sort) {
 		this.sort = sort;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Integer getGrp() {
+		return grp;
+	}
+
+	public void setGrp(Integer grp) {
+		this.grp = grp;
 	}
     
 }

@@ -29,10 +29,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import net.minitt.hero.blog.service.UserService;
 import net.minitt.hero.core.security.JwtAuthenticationFilter;
 import net.minitt.hero.core.security.JwtLoginFilter;
 import net.minitt.hero.core.security.SecurityUser;
+import net.minitt.hero.core.service.UserService;
 
 @Configuration
 @Order(SecurityProperties.DEFAULT_FILTER_ORDER)
@@ -96,7 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     UserDetailsService buildUserDetailsService() {
     	//AuthorityUtils.createAuthorityList("USER", "write")
         return username -> {
-            net.minitt.hero.blog.entity.User account = userService.findUser(username);
+            net.minitt.hero.core.entity.User account = userService.findUser(username);
             if(account==null) {
             	throw new UsernameNotFoundException(username);
             }

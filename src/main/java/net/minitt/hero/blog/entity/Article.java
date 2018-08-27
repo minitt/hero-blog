@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
 import net.minitt.hero.core.base.BaseEntity;
+import net.minitt.hero.core.entity.User;
 
 @Entity
 public class Article extends BaseEntity {

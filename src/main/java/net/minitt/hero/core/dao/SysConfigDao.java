@@ -1,7 +1,7 @@
-package net.minitt.hero.blog.dao;
+package net.minitt.hero.core.dao;
 
-import net.minitt.hero.blog.entity.SysConfig;
 import net.minitt.hero.core.base.BaseDao;
+import net.minitt.hero.core.entity.SysConfig;
 
 public interface SysConfigDao extends BaseDao<SysConfig>{
 

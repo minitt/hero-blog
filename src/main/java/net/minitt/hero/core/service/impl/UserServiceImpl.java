@@ -1,4 +1,4 @@
-package net.minitt.hero.blog.service.impl;
+package net.minitt.hero.core.service.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -18,9 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import net.minitt.hero.blog.dao.UserDao;
-import net.minitt.hero.blog.entity.User;
-import net.minitt.hero.blog.service.UserService;
+import net.minitt.hero.core.dao.UserDao;
+import net.minitt.hero.core.entity.User;
+import net.minitt.hero.core.service.UserService;
 
 @Service
 @Transactional(readOnly = true)

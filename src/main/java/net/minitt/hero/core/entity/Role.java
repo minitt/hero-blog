@@ -1,5 +1,6 @@
 package net.minitt.hero.core.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -8,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import net.minitt.hero.core.base.BaseEntity;
 
@@ -23,6 +25,9 @@ public class Role extends BaseEntity{
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "role_resource", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "resource_id"))
 	private Set<Resource> resourceSet;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="role")
+	private Set<User> userSet;
 	
 	public String getName() {
 		return name;
@@ -47,5 +52,16 @@ public class Role extends BaseEntity{
 	}
 	public void setResourceSet(Set<Resource> resourceSet) {
 		this.resourceSet = resourceSet;
+	}
+	public void addResource(Resource resource) {
+		Set<Resource> resources = getResourceSet();
+		if (resources == null) {
+			resources = new HashSet<Resource>();
+			setResourceSet(resources);
+		}
+		resources.add(resource);
+		if (resource.getRoles() == null)
+			resource.setRoles(new HashSet<Role>());
+		resource.getRoles().add(this);
 	}
 }

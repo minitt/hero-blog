@@ -2,6 +2,7 @@ package net.minitt.hero.core.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -15,8 +16,8 @@ public class SecurityUser extends User{
 	
 	private net.minitt.hero.core.entity.User user;
 	
-	public SecurityUser(Map userMap) {
-		this((String)userMap.get("username"),"",true, true, true, true,new ArrayList<>());
+	public SecurityUser(Map userMap,Collection<? extends GrantedAuthority> authorities) {
+		this((String)userMap.get("username"),"",true, true, true, true,authorities);
 		Map u = (Map)userMap.get("user");
 		this.user = new net.minitt.hero.core.entity.User();
 		this.id = (Integer)u.get("id");
@@ -28,8 +29,8 @@ public class SecurityUser extends User{
 		this.user.setActivatedTime((Long)u.get("activatedTime"));
 	}
 	
-	public SecurityUser(net.minitt.hero.core.entity.User account) {
-		this(account.getUsername(),account.getPassword(),true, true, true, true,new ArrayList<>());
+	public SecurityUser(net.minitt.hero.core.entity.User account,List<GrantedAuthority> grantedAuthorities) {
+		this(account.getUsername(),account.getPassword(),true, true, true, true,grantedAuthorities);
 		this.id = account.getId();
 		this.user = account;
 		this.user.setRole(null);

@@ -28,6 +28,7 @@ public class Resource extends BaseEntity{
 	private Integer sort;
 	private Integer type;
 	private String auth;
+	private Boolean hidden = false;
 	
 	@ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="resourceSet")
 	private Set<Role> roles;
@@ -73,6 +74,18 @@ public class Resource extends BaseEntity{
 	}
 	public void setAuth(String auth) {
 		this.auth = auth;
+	}
+	public Boolean getHidden() {
+		return hidden;
+	}
+	public void setHidden(Boolean hidden) {
+		this.hidden = hidden;
+	}
+	public Set<Role> getRoles() {
+		return roles;
+	}
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 	
 }

@@ -2,6 +2,7 @@ package net.minitt.hero.core.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.FilterChain;
@@ -9,8 +10,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -51,8 +56,13 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 			Claims c = Jwts.parser().setSigningKey(signatureKey).parseClaimsJws(token.replace("Bearer ", ""))
 					.getBody();//ExpiredJwtException
 			Map loginuser = c.get("loginuser",Map.class);
-			SecurityUser user = new SecurityUser(loginuser);
-			return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+			List<Map> authorities = (List<Map>)loginuser.get("authorities");
+			List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+			for(Map m:authorities) {
+				grantedAuthorities.add(new SimpleGrantedAuthority(m.get("authority").toString()));
+			}
+			SecurityUser user = new SecurityUser(loginuser,grantedAuthorities);
+			return new UsernamePasswordAuthenticationToken(user, null, grantedAuthorities);
 		}
 		return null;
 	}

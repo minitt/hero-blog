@@ -2,7 +2,9 @@ package net.minitt.hero.config;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,38 +12,51 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import net.minitt.hero.core.entity.Resource;
+import net.minitt.hero.core.security.HeroPermissionEvaluator;
 import net.minitt.hero.core.security.JwtAuthenticationFilter;
 import net.minitt.hero.core.security.JwtLoginFilter;
 import net.minitt.hero.core.security.SecurityUser;
+import net.minitt.hero.core.service.ResourceService;
 import net.minitt.hero.core.service.UserService;
 
-@Configuration
-@Order(SecurityProperties.DEFAULT_FILTER_ORDER)
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private ResourceService resourceService;
+    
+//    @Autowired
+//    private HeroFilterSecurityInterceptor heroFilterSecurityInterceptor;
 
     @Value("{hero.signature-key}")
 	private String signatureKey;
+    
+    
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -76,15 +91,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     		
     	});
         http.cors().and().csrf().disable()
-        		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        		.and()
-        		.authorizeRequests()
-        		.antMatchers("/admin/**").authenticated()
-                //.antMatchers(HttpMethod.POST, "/admin/login").permitAll()
-                //.anyRequest().authenticated()
-                .and()
-                .addFilter(loginFilter)
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(),signatureKey));
+    		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    		.and()
+    		.authorizeRequests()
+    		.antMatchers("/admin/**")
+    		.authenticated()
+//    		.accessDecisionManager(new HeroAccessDecisionManager())
+            //.antMatchers(HttpMethod.POST, "/admin/login").permitAll()
+            //.anyRequest().authenticated()
+            .and()
+            .addFilter(loginFilter)
+            .addFilter(new JwtAuthenticationFilter(authenticationManager(),signatureKey));
+        //http.addFilterBefore(heroFilterSecurityInterceptor, FilterSecurityInterceptor.class);
     }
 
     @Override
@@ -94,14 +112,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     
     @Bean
     UserDetailsService buildUserDetailsService() {
-    	//AuthorityUtils.createAuthorityList("USER", "write")
+//    	AuthorityUtils.createAuthorityList("USER", "write")
         return username -> {
             net.minitt.hero.core.entity.User account = userService.findUser(username);
             if(account==null) {
             	throw new UsernameNotFoundException(username);
             }
-            SecurityUser user = new SecurityUser(account);
+            List<Resource> resources = resourceService.findAll(account.getId());
+            List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+            for (Resource res : resources) {
+                if (res != null && res.getAuth()!=null) {
+	                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(res.getAuth());
+	                //1：此处将权限信息添加到 GrantedAuthority 对象中，在后面进行全权限验证时会使用GrantedAuthority 对象。
+	                grantedAuthorities.add(grantedAuthority);
+                }
+            }
+            SecurityUser user = new SecurityUser(account,grantedAuthorities);
             return user;
         };
+    }
+    
+    @Bean
+    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler(){
+        DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
+        handler.setPermissionEvaluator(new HeroPermissionEvaluator());
+        return handler;
     }
 }

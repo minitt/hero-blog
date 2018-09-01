@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +27,13 @@ public class ArticleController extends BaseController{
 	private ArticleService articleService;
 	
 	@RequestMapping("list")
+	@PreAuthorize("hasPermission('currUser','article:list')")
 	public Map<String,Object> list(Article searchArticle,@PageableDefault(value = 20, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable){
 		return renderJson(articleService.findByPage(searchArticle, pageable));
 	}
 	
 	@RequestMapping("fetch")
+	@PreAuthorize("hasPermission('currUser','article:fetch')")
 	public Map<String,Object> fetch(Integer id){
 		if(id==null)
 			throw new IllegalArgumentException("Parameter error!id is null");

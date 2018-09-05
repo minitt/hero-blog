@@ -91,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     		
     	});
         http.cors().and().csrf().disable()
-    		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     		.and()
     		.authorizeRequests()
     		.antMatchers("/admin/**")
@@ -122,9 +122,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             for (Resource res : resources) {
                 if (res != null && res.getAuth()!=null) {
-	                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(res.getAuth());
-	                //1：此处将权限信息添加到 GrantedAuthority 对象中，在后面进行全权限验证时会使用GrantedAuthority 对象。
-	                grantedAuthorities.add(grantedAuthority);
+                	if(res.getAuth().indexOf(';')>=0) {
+                		for(String x:res.getAuth().split(":")[1].split(";")) {
+                			GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(res.getAuth().split(":")[0]+":"+x);
+                    		//1：此处将权限信息添加到 GrantedAuthority 对象中，在后面进行全权限验证时会使用GrantedAuthority 对象。
+                    		grantedAuthorities.add(grantedAuthority);
+                		}
+                	}else {
+                		GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(res.getAuth());
+                		grantedAuthorities.add(grantedAuthority);
+                	}
                 }
             }
             SecurityUser user = new SecurityUser(account,grantedAuthorities);

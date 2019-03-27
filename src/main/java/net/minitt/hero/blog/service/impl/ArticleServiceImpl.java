@@ -164,8 +164,8 @@ public class ArticleServiceImpl implements ArticleService {
 			@Override
 			public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				Predicate predicate = cb.conjunction();
-				root.fetch("typeSet",JoinType.LEFT);
-				root.fetch("tagSet",JoinType.LEFT);
+//				root.fetch("typeSet",JoinType.LEFT);
+//				root.fetch("tagSet",JoinType.LEFT);
 				return predicate;
 			}
 		},pageable);

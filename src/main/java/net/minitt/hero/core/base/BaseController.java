@@ -1,11 +1,5 @@
 package net.minitt.hero.core.base;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import net.minitt.hero.core.security.SecurityUser;
@@ -15,54 +9,33 @@ public abstract class BaseController {
 	private static final int SUCCESS_CODE = 20000;
 	private static final int FAILD_CODE = 50000;
 	
-	protected Map<String,Object> renderJson(Page<?> p) {
-		Map<String,Object> m = new HashMap<String,Object>();
-		m.put("data", p);
-		m.put("code", SUCCESS_CODE);
+	protected <V> ResultJson<V> renderJson(V p) {
+		ResultJson<V> m = new ResultJson<V>();
+		m.setCode(SUCCESS_CODE);
+		m.setData(p);
 		return m;
 	}
 	
-	protected Map<String,Object> renderJson(Map<?,?> p) {
-		Map<String,Object> m = new HashMap<String,Object>();
-		m.put("data", p);
-		m.put("code", SUCCESS_CODE);
-		return m;
-	}
-	
-	protected Map<String,Object> renderJson(List<?> p) {
-		Map<String,Object> m = new HashMap<String,Object>();
-		m.put("data", p);
-		m.put("code", SUCCESS_CODE);
-		return m;
-	}
-	
-	protected Map<String,Object> renderJson(Optional<?> p) {
-		Map<String,Object> m = new HashMap<String,Object>();
-		m.put("data", p.get());
-		m.put("code", SUCCESS_CODE);
-		return m;
-	}
-	
-	protected Map<String,Object> renderSuceess(){
+	protected ResultJson<String> renderSuceess(){
 		return renderSuceess("OK");
 	}
 	
-	protected Map<String,Object> renderSuceess(String msg){
-		Map<String,Object> m = new HashMap<String,Object>();
-		m.put("data", msg);
-		m.put("code", SUCCESS_CODE);
-		return m;
+	protected ResultJson<String> renderSuceess(String msg){
+		ResultJson<String> m = new ResultJson<String>();
+		m.setCode(SUCCESS_CODE);
+		m.setData(msg);
+		return this.<String>renderJson(msg);
 	}
 	
-	protected Map<String,Object> renderfail(){
-		return renderSuceess("FAIL");
+	protected ResultJson<String> renderfail(){
+		return renderfail("FAIL");
 	}
 	
-	protected Map<String,Object> renderfail(String msg){
-		Map<String,Object> m = new HashMap<String,Object>();
-		m.put("data", msg);
-		m.put("code", FAILD_CODE);
-		return m;
+	protected ResultJson<String> renderfail(String msg){
+		ResultJson<String> m = new ResultJson<String>();
+		m.setCode(FAILD_CODE);
+		m.setData(msg);
+		return this.<String>renderJson(msg);
 	}
 	
 	protected SecurityUser getCurrUser() {

@@ -60,6 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+    	
+    	/**
+    	 * 采用JWT登录方式
+    	 */
     	JwtLoginFilter loginFilter = new JwtLoginFilter(authenticationManager());
     	loginFilter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
 			
@@ -82,33 +86,101 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 					AuthenticationException exception) throws IOException, ServletException {
 				if(exception instanceof BadCredentialsException) {
+					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 					response.setCharacterEncoding("UTF-8");
 					response.setContentType("application/json; charset=utf-8");  
 					PrintWriter out = response.getWriter();
-				    out.write("{\"code\":40100,\"data\":{\"msg\":\"帐号密码错误\"}}");
+				    out.write("{\"code\":40101,\"data\":{\"msg\":\"帐号密码错误\"}}");
 				}
 			}
     		
     	});
+    	
+    	/**
+    	 * session模式登录
+    	 */
         http.cors().and().csrf().disable()
+        /**
+         * jwt模式需要取消注释
+         */
         	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     		.and()
     		.authorizeRequests()
     		.antMatchers("/admin/**")
     		.authenticated()
-//    		.accessDecisionManager(new HeroAccessDecisionManager())
-            //.antMatchers(HttpMethod.POST, "/admin/login").permitAll()
-            //.anyRequest().authenticated()
             .and()
+            /**
+             * 传统session ajax登录
+             
+            .formLogin().loginPage("/admin/login").successHandler((HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
+            	response.setCharacterEncoding("UTF-8");
+				response.setContentType("application/json; charset=utf-8");  
+				PrintWriter out = response.getWriter();
+				out.write("{\"code\":20000,\"data\":{\"msg\":\"登录成功\"}}");
+				out.flush();
+                out.close();
+            })
+            .failureHandler((HttpServletRequest request, HttpServletResponse response, AuthenticationException e) -> {
+            	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            	response.setCharacterEncoding("UTF-8");
+				response.setContentType("application/json; charset=utf-8");  
+				PrintWriter out = response.getWriter();
+				if(e instanceof BadCredentialsException) {
+					out.write("{\"code\":40101,\"data\":{\"msg\":\"帐号密码错误\"}}");
+				}
+				out.flush();
+                out.close();
+            }).and().exceptionHandling().accessDeniedHandler((HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) -> {//登录后，权限不够
+            	response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            	response.setCharacterEncoding("UTF-8");
+				response.setContentType("application/json; charset=utf-8");  
+				PrintWriter out = response.getWriter();
+				out.write("{\"code\":40301,\"data\":{\"msg\":\"无权访问\"}}");
+				out.flush();
+                out.close();
+            }).authenticationEntryPoint((HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) -> {//未登录访问
+            	response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            	response.setCharacterEncoding("UTF-8");
+				response.setContentType("application/json; charset=utf-8");  
+				PrintWriter out = response.getWriter();
+				out.write("{\"code\":40302,\"data\":{\"msg\":\"无权访问，请先登录\"}}");
+				out.flush();
+                out.close();
+            }).and().logout().logoutUrl("/admin/logout").logoutSuccessHandler((HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
+            	response.setCharacterEncoding("UTF-8");
+				response.setContentType("application/json; charset=utf-8");  
+				PrintWriter out = response.getWriter();
+				out.write("{\"code\":20000,\"data\":{\"msg\":\"登出成功\"}}");
+				out.flush();
+                out.close();
+			}).permitAll();
+			*/
+            /**
+             * jwt登录方式
+             */
             .addFilter(loginFilter)
             .addFilter(new JwtAuthenticationFilter(authenticationManager(),signatureKey));
-        //http.addFilterBefore(heroFilterSecurityInterceptor, FilterSecurityInterceptor.class);
     }
 
+    /*
+     *   当前版本5新增支持加密方式：
+     *   bcrypt - BCryptPasswordEncoder (Also used for encoding)
+     *   ldap - LdapShaPasswordEncoder
+     *   MD4 - Md4PasswordEncoder
+     *   MD5 - new MessageDigestPasswordEncoder("MD5")
+     *   noop - NoOpPasswordEncoder
+     *   pbkdf2 - Pbkdf2PasswordEncoder
+     *   scrypt - SCryptPasswordEncoder
+     *   SHA-1 - new MessageDigestPasswordEncoder("SHA-1")
+     *   SHA-256 - new MessageDigestPasswordEncoder("SHA-256")
+     *   sha256 - StandardPasswordEncoder
+     */
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(buildUserDetailsService()).passwordEncoder(new BCryptPasswordEncoder());
     }
+    
+    
     
     @Bean
     UserDetailsService buildUserDetailsService() {

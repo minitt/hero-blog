@@ -1,5 +1,6 @@
 server:
   port: 80
+  address: 0.0.0.0
   tomcat.max-threads: 200
   tomcat.uri-encoding: UTF-8
   
@@ -7,6 +8,8 @@ hero:
   signature-key: XdYKq22i@L'3}BdW{J;p'wSaRZSQs''v
 
 spring:
+  jackson:
+    time-zone: GMT+8
   jpa:
     database: h2
     hibernate:
@@ -54,7 +57,9 @@ spring:
 #      password: $2a$10$Ug0uAUpuC8V.Titr/jlfVu/Bm8EbQmIKpNf7zIrYwmwPM281p/kGi
 #debug: true
 
-#logging:
+logging:
+  level:
+    root: info
 #  file: ./logs/hero-blog.log
 #  level:
 #    org.hibernate: debug

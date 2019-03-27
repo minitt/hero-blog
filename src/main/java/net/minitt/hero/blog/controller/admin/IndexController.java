@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.minitt.hero.core.base.BaseController;
+import net.minitt.hero.core.base.ResultJson;
 import net.minitt.hero.core.entity.Resource;
 import net.minitt.hero.core.service.ResourceService;
 
@@ -27,13 +27,13 @@ public class IndexController extends BaseController{
 	}
 	
 	@RequestMapping("info")
-	public Map<String,Object> info(String token){
+	public ResultJson<Map<String,Object>> info(String token){
 		List<Resource> all = resourceService.findMenus();
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("roles", new String[] {"admin"});
 		data.put("resources", buildMenuTree(all));
 		data.put("name", getCurrUser().getUser().getScreenName());
-		data.put("avatar", "5555");
+		data.put("avatar", "5555");//头像
 		return renderJson(data);
 	}
 	

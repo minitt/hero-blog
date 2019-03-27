@@ -22,25 +22,25 @@ public class Search implements Serializable {
      * ik_max_word：会将文本做最细粒度的拆分，例如「中华人民共和国国歌」会被拆分为「中华人民共和国、中华人民、中华、华人、人民共和国、人民、人、民、共和国、共和、和、国国、国歌」，会穷尽各种可能的组合；
 	 * ik_smart：会将文本做最粗粒度的拆分，例如「中华人民共和国国歌」会被拆分为「中华人民共和国、国歌」；
      */
-	@Field(type = FieldType.text, searchAnalyzer = "ik_max_word", analyzer = "ik_max_word")
+	@Field(type = FieldType.text, searchAnalyzer = "ik_smart", analyzer = "ik_max_word")
     private String title;
 
     /**
      * 内容
      */
-    @Field(type = FieldType.text, fielddata = true, searchAnalyzer = "ik_max_word", analyzer = "ik_max_word")
+    @Field(type = FieldType.text, fielddata = true, searchAnalyzer = "ik_smart", analyzer = "ik_max_word")
     private String content;
     
     /**
      * 分类
      */
-    @Field(type = FieldType.text, searchAnalyzer = "ik_max_word", analyzer = "ik_max_word")
+    @Field(type = FieldType.text, searchAnalyzer = "ik_smart", analyzer = "ik_max_word")
     private String categories;
     
     /**
      * 标签
      */
-    @Field(type = FieldType.text, searchAnalyzer = "ik_max_word", analyzer = "ik_max_word")
+    @Field(type = FieldType.text, searchAnalyzer = "ik_smart", analyzer = "ik_max_word")
     private String tags;
     
     /**
